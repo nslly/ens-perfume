@@ -7,11 +7,18 @@ use App\Http\Controllers\Auth\RegisterController;
 
 
 
-// Route::get('/', function () {
-//     return Inertia::render('App', [
-//         'message' => 'Welcome to Laravel with Inertia and Vue!',
-//     ]);
-// });
+Route::get('/', function () {
+    return Inertia::render('Users/Home');
+});
+Route::get('/shop', function () {
+    return Inertia::render('Users/Shop');
+});
+Route::get('/brand', function () {
+    return Inertia::render('Users/Brand');
+});
+Route::get('/about-us', function () {
+    return Inertia::render('Users/About');
+});
 
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register.index');

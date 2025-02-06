@@ -6,6 +6,7 @@ import '../css/app.css';
 
 
 createInertiaApp({
+    title: title => `${title} - Ensperfume`,
     resolve: (name) =>
         resolvePageComponent(
             `./Pages/${name}.vue`,
