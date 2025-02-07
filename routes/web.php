@@ -9,16 +9,16 @@ use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return Inertia::render('Users/Home');
-});
+})->name('users.home');
 Route::get('/shop', function () {
     return Inertia::render('Users/Shop');
-});
+})->name('users.shop');
 Route::get('/brand', function () {
     return Inertia::render('Users/Brand');
-});
+})->name('users.brand');
 Route::get('/about-us', function () {
     return Inertia::render('Users/About');
-});
+})->name('users.about');
 
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register.index');

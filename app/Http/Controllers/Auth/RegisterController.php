@@ -6,14 +6,17 @@ use Inertia\Response;
 use App\Services\AuthService;
 use App\Traits\HandleCrudActions;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\RegisterRequest;
-
 
 class RegisterController extends Controller
 {
     use HandleCrudActions;
 
     protected string $indexInertiaComponent = 'Users/Authentication/Register';
+
+    protected string $redirectComponent = 'Users/Home';
+
 
 
     protected $authService;
@@ -44,13 +47,14 @@ class RegisterController extends Controller
      * 
      * @param RegisterRequest $request get the request
      * 
-     * @return Response
+     * @return RedirectResponse
      */
-    public function store(RegisterRequest $request): Response
+    public function store(RegisterRequest $request): RedirectResponse
     {
         try {
             $this->authService->register($request->validated());
-            return $this->renderForm('Home');
+
+            return to_route('users.home');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Failed to register. Please try again.']);
         }

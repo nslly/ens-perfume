@@ -51,7 +51,7 @@ class LoginController extends Controller
     {
 
         if ($this->authService->login($request->validated())) {
-            return $this->renderForm('Home');
+            return $this->renderForm($this->indexInertiaComponent);
         }
 
         return back()->withErrors(['error' => 'Invalid credentials.']);

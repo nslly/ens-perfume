@@ -57,7 +57,13 @@ class AuthService
 
         Auth::login($user);
 
-        return $user;
+
+        if (Auth::check()) {
+            return $user;
+        }
+
+
+        throw new \Exception('Failed to authenticate the user.');
     }
 
     /**
