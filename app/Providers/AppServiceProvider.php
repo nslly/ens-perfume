@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use App\Http\Middleware\RedirectIfAuthenticated;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,11 +21,5 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        Inertia::share([
-            'user' => fn() => Auth::user(),
-            'isAuthenticated' => fn() => Auth::check(),
-        ]);
-    }
+    public function boot(): void {}
 }

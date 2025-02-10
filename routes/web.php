@@ -1,12 +1,35 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 
 
+Route::middleware(['guest'])->group(function () {
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])
+        ->name('password.email');
+    Route::get('/forgot-password', function () {
+        return Inertia::render('Users/Authentication/ForgotPassword');
+    });
+
+    Route::post('/reset-password', [PasswordResetController::class, 'reset'])
+        ->name('password.update');
+
+    Route::get('/reset-password', function () {
+        return Inertia::render('Users/Authentication/ResetPassword');
+    });
+});
+Route::middleware(['auth'])->group(function () {
+    Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+
+    Route::get('/profile', function () {
+        return Inertia::render('Users/Profile');
+    })->name('users.profile');
+});
 Route::get('/', function () {
     return Inertia::render('Users/Home');
 })->name('users.home');
@@ -21,8 +44,14 @@ Route::get('/about-us', function () {
 })->name('users.about');
 
 
-Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
-Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-Route::get('/login', [LoginController::class, 'index'])->name('login.index');
-Route::post('/login', [LoginController::class, 'store'])->name('login.store');
-Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+Route::middleware([RedirectIfAuthenticated::class])->group(function () {
+
+    /**
+     * 
+     * Authentication 
+     */
+    Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
+    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+    Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+    Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+});

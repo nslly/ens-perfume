@@ -19,7 +19,6 @@
                     </div>
                 </div>
             </div>
-            {{ props.isAuthenticated }}
         </div>
 
     </AppLayout>
@@ -29,13 +28,8 @@
 
 <script setup>
     import { Head } from '@inertiajs/vue3'
-    import { defineProps } from 'vue';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import PrimaryButton from '@/Components/Button/Primary.vue';
     import SecondaryButton from '@/Components/Button/Secondary.vue';
 
-    const props = defineProps({
-        user: Object,
-        isAuthenticated: Boolean
-    });
 </script>

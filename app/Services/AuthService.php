@@ -7,8 +7,8 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
-use Dotenv\Exception\ValidationException;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class AuthService
@@ -24,7 +24,16 @@ class AuthService
      */
     public function login(array $formData): bool
     {
-        return Auth::attempt($formData);
+        $remember = $formData['remember'] ?? false;
+        unset($formData['remember']);
+        if (Auth::attempt($formData, $remember)) {
+            session()->regenerate();
+            return true;
+        }
+
+        throw ValidationException::withMessages([
+            'error' => trans('These credentials do not match our records.'),
+        ]);
     }
 
     /**
@@ -69,26 +78,24 @@ class AuthService
     /**
      * Send a password reset link to the user.
      *
-     * @param string $email
-     * 
+     * @param array $data
      * @return string
      */
-    public function sendResetLink(string $email): string
+    public function sendResetLink(array $data): string
     {
-        $status = Password::sendResetLink(['email' => $email]);
+        $status = Password::sendResetLink($data);
 
         if ($status !== Password::RESET_LINK_SENT) {
-            throw new AuthorizationException('Unable to send password reset link.');
+            throw ValidationException::withMessages(['email' => __($status)]);
         }
 
-        return 'Password reset link sent.';
+        return $status;
     }
 
     /**
      * Reset the user's password.
      *
      * @param array $data
-     * 
      * @return string
      */
     public function resetPassword(array $data): string
@@ -96,16 +103,15 @@ class AuthService
         $status = Password::reset($data, function ($user, $password) {
             $user->forceFill([
                 'password' => Hash::make($password),
-                'remember_token' => Str::random(60),
             ])->save();
 
             event(new PasswordReset($user));
         });
 
         if ($status !== Password::PASSWORD_RESET) {
-            throw new AuthorizationException('Unable to reset password.');
+            throw ValidationException::withMessages(['email' => __($status)]);
         }
 
-        return 'Password reset successfully.';
+        return $status;
     }
 }

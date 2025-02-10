@@ -1,7 +1,6 @@
 <template>
     <nav class=" bg-[#f2f2f2] pt-2 border-b border-gray-200 inset-x-0 ">
         <div class="max-w-7xl mx-auto flex justify-between items-center ">
-
             <div>
                 <Link href="/" class="text-blue-500">
                     <img :src="page.props.logo" alt="logo" class="mx-auto h-[80px] w-[80px]">
@@ -38,14 +37,41 @@
                     </i>
                 </Link>
                 
-                <Link href="/login">
-                    <PrimaryButton  class="text-sm">
+                <Link v-if="!authenticated" href="/login">
+                    <PrimaryButton class="text-sm">
                         Login 
                         <i class="material-icons">
                             person
                         </i>
                     </PrimaryButton>
                 </Link>
+                <Dropdown v-else>
+
+                    <template #trigger>
+                        <p class="text-sm flex items-center space-x-2 font-medium text-[#0D0D60]">
+                            <i class="material-icons">account_circle</i>
+                            <span>{{ user.name }}</span>
+                        </p>
+                    </template>
+
+                    <template #menu>
+                        <Link 
+                            href="/profile"
+                            class="flex items-center space-x-2 px-4 py-2 text-sm text-[#0D0D60] w-full hover:bg-[#0D0D60] hover:text-[#ffffff] text-left"
+                        >
+                            <i class="material-icons text-sm">person</i>
+                            <span>Profile</span>
+                        </Link>
+                        
+                        <button 
+                            @click="logout"
+                            class="flex items-center space-x-2 px-4 py-2 text-sm text-[#0D0D60] hover:bg-[#0D0D60] hover:text-[#ffffff] w-full text-left"
+                        >
+                            <i class="material-icons text-sm">logout</i>
+                            <span>Logout</span>
+                        </button>
+                    </template>
+                </Dropdown>
             </div>
         </div>
 
@@ -54,12 +80,31 @@
 </template>
 
 <script setup>
-    import { Link, usePage } from '@inertiajs/vue3';
+    import { Link, usePage, router } from '@inertiajs/vue3';
+    import { computed } from 'vue';
     import PrimaryButton from '@/Components/Button/Primary.vue';
+    import Dropdown from '@/Components/Dropdown/Dropdown.vue';
 
+    /**
+     * 
+     * State
+     */
     const page = usePage();
 
 
+
+    const authenticated = computed(() => page.props.auth.isAuthenticated);
+    const user = computed(() => page.props.auth.user);
+
+
+    /**
+     * 
+     * Functions
+     */
+
+    const logout = () => {
+        router.post('/logout');
+    };
 
 
 </script>
@@ -72,4 +117,6 @@
     padding: 6px 14px; 
     border-radius: 4px;
 }
+
+
 </style>

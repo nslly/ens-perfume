@@ -9,6 +9,8 @@ use App\Services\AuthService;
 use App\Traits\HandleCrudActions;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -45,26 +47,34 @@ class LoginController extends Controller
      * 
      * @param LoginRequest $request get the request
      * 
-     * @return Response 
+     * @return RedirectResponse
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request): RedirectResponse
     {
-
-        if ($this->authService->login($request->validated())) {
-            return $this->renderForm($this->indexInertiaComponent);
+        try {
+            if ($this->authService->login($request->validated())) {
+                return to_route('users.home');
+            }
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Something went wrong. Please try again.']);
         }
-
-        return back()->withErrors(['error' => 'Invalid credentials.']);
     }
 
     /**
      * logout the current user.
      * 
-     * @return Response
+     * @return RedirectResponse
      */
-    public function destroy(): Response
+    public function destroy(): RedirectResponse
     {
-        $this->authService->logout();
-        return $this->renderForm('Home');
+        try {
+            $this->authService->logout();
+
+            return to_route('users.home');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to logout.']);
+        }
     }
 }

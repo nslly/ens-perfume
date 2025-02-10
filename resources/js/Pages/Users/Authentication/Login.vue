@@ -8,23 +8,33 @@
                     <h1 class="text-2xl font-bold flex justify-center items-center">Sign In</h1>
                     <div class="space-y-6">
                         <TextInput 
-                            v-model="email" 
+                            v-model="form.email" 
                             label="Email" 
                             type="email"
                             placeholder="Enter your email"
+                            :error="errors.email ?? ''"
+
                         />
 
                         <TextInput 
-                            v-model="password" 
+                            v-model="form.password" 
                             label="Password" 
                             type="password"
                             placeholder="Enter your password"
+                            :error="errors.password ?? ''" 
+
+
                         />
                     </div>
+                    <p v-if="errors.error" class="text-red-500 text-sm">{{ errors.error }}</p>
+
                     <div class="flex justify-between items-center spacex-8">
-                        <Checkbox v-model="rememberMe" label="Remember Me" />
+                        <Checkbox v-model="form.remember" label="Remember Me" />
                         <div>
-                            <p class="text-sm font-semibold text-[#0D0D60]">Forgot Password?</p>
+                            <Link href="/forgot-password" class="text-sm font-semibold text-[#0D0D60]">
+                                <p>Forgot Password?</p>
+                            </Link>
+
                         </div>
                     </div>
                     <div class="w-full">
@@ -52,18 +62,44 @@
 </template>
 
 <script setup>
-    import { Head, Link } from '@inertiajs/vue3'
+    import { Head, Link, useForm } from '@inertiajs/vue3'
     import { ref } from 'vue'
     import TextInput from '@/Components/Input/Textbox.vue'
     import Checkbox from '@/Components/Input/Checkbox.vue'
     import PrimaryButton from '@/Components/Button/Primary.vue';
     import AppLayout from '../../../Layouts/AppLayout.vue';
 
-    const email = ref('');
-    const password = ref('');
-    const rememberMe = ref(false);
+    /**
+     * 
+     * States
+     */
+
+    const errors = ref({});
+
+    const form = useForm({
+        email: '',
+        password: '',
+        remember: false,
+    });
+
+
+    /**
+     * 
+     * Functions
+     */
+
 
     const login = () => {
-        console.log({ email: email.value, password: password.value, rememberMe: rememberMe.value });
+        form.post('/login', {
+            preserveScroll: true,
+            onSuccess: () => {
+                console.log('Login successful')
+            },
+            onError: (err) => {
+                errors.value = { ...err }
+                console.log(err);
+            }
+        })
+        
     };
 </script>

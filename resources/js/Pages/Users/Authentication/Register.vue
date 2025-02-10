@@ -72,6 +72,7 @@
 
     const errors = ref({});
     const terms = ref(false);
+    
 
     const form = useForm({
         name: '',
