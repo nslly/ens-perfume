@@ -31,10 +31,13 @@
                 </ul>
             </div>
             <div class="flex items-center justify-between space-x-8">
-                <Link  href="/cart">
-                    <i class="material-icons text-[#0D0D60]">
-                        shopping_bag
-                    </i>
+                <Link :href="page.props.auth.user ? '/cart' : '/login'">
+                    <div class="relative">
+                        <i class="material-icons text-[#0D0D60]">shopping_bag</i>
+                        <div class="absolute -bottom-2 -right-2 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center text-xs text-white">
+                            {{ cartItemsCount }}
+                        </div>
+                    </div>
                 </Link>
                 
                 <Link v-if="!authenticated" href="/login">
@@ -94,7 +97,7 @@
 
 
     const authenticated = computed(() => page.props.auth.isAuthenticated);
-    const user = computed(() => page.props.auth.user);
+    const user = computed(() => page.props.auth.user.data);
 
 
     /**

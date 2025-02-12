@@ -23,12 +23,12 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+    import { defineProps, defineEmits } from 'vue';
 
-defineProps({
-    modelValue: Boolean, // Supports v-model for state binding
-    label: String        // Checkbox label
-});
+    defineProps({
+        modelValue: Boolean, // Supports v-model for state binding
+        label: String        // Checkbox label
+    });
 
-defineEmits(['update:modelValue']);
+    defineEmits(['update:modelValue']);
 </script>

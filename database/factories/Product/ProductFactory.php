@@ -24,19 +24,19 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->words(2, true); // Generate a random name
+        $name = 'Product-' .  $this->faker->words(2, true); // Generate a random name
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'category_id' => Category::factory(), 
-            'brand_id' => Brand::factory(), 
+            'category_id' => Category::factory(),
+            'brand_id' => Brand::factory(),
             'description' => $this->faker->paragraph(),
-            'volume' => $this->faker->randomElement([30, 50, 75, 100]), 
+            'volume' => $this->faker->randomElement([30, 50, 75, 100]),
             'quantity' => $this->faker->numberBetween(1, 100),
-            'price' => $this->faker->randomFloat(2, 500, 5000), 
-            'discount' => $this->faker->randomFloat(2, 0, 100), 
-            'images' => json_encode([$this->faker->imageUrl(640, 480, 'perfume')]), 
-            'gender' => $this->faker->randomElement(GenderIdentification::cases())->value, 
+            'price' => $this->faker->randomFloat(2, 500, 5000),
+            'discount' => $this->faker->randomFloat(2, 0, 100),
+            'images' => json_encode([$this->faker->imageUrl(640, 480, 'perfume')]),
+            'gender' => $this->faker->randomElement(GenderIdentification::cases())->value,
         ];
     }
 }

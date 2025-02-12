@@ -28,18 +28,18 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+    import { defineProps, defineEmits } from 'vue';
 
-const props = defineProps({
-    label: String,        // Input label
-    placeholder: String,  // Placeholder text
-    modelValue: String,   // v-model support
-    type: {
-        type: String,
-        default: 'text'  // Default type is text
-    },
-    error: String,        // Error message (optional)
-});
+    const props = defineProps({
+        label: String,        // Input label
+        placeholder: String,  // Placeholder text
+        modelValue: String,   // v-model support
+        type: {
+            type: String,
+            default: 'text'  // Default type is text
+        },
+        error: String,        // Error message (optional)
+    });
 
-defineEmits(['update:modelValue']);
+    defineEmits(['update:modelValue']); 
 </script>

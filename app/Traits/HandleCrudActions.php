@@ -17,6 +17,6 @@ trait HandleCrudActions
      */
     protected function renderForm(string $view, array $data = []): Response
     {
-        return Inertia::render($view, $data);
+        return Inertia::render($view, ['items' => $data]);
     }
 }
