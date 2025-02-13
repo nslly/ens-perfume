@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
@@ -21,6 +22,7 @@ class HomeController extends Controller
     public function index(): Response
     {
         $products = Product::query()->limit(6)->get();
-        return $this->renderForm($this->indexInertiaComponent, $products->toArray());
+        $productResource = ProductResource::collection($products)->toArray(request());
+        return $this->renderForm($this->indexInertiaComponent, $productResource);
     }
 }

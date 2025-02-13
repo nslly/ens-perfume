@@ -34,8 +34,8 @@
                 <Link :href="page.props.auth.user ? '/cart' : '/login'">
                     <div class="relative">
                         <i class="material-icons text-[#0D0D60]">shopping_bag</i>
-                        <div class="absolute -bottom-2 -right-2 bg-red-500 rounded-full w-5 h-5 flex items-center justify-center text-xs text-white">
-                            {{ cartItemsCount }}
+                        <div v-if="cartCount" class="absolute -bottom-2 -right-2 bg-[#FFBF00] rounded-full w-5 h-5 flex items-center justify-center text-xs text-[#fafafa]">
+                            {{ cartCount }}
                         </div>
                     </div>
                 </Link>
@@ -51,9 +51,9 @@
                 <Dropdown v-else>
 
                     <template #trigger>
-                        <p class="text-sm flex items-center space-x-2 font-medium text-[#0D0D60]">
+                        <p class="text-sm flex items-center space-x-1 font-medium text-[#0D0D60]">
                             <i class="material-icons">account_circle</i>
-                            <span>{{ user.name }}</span>
+                            <span class="text-[#1F2123]">{{ user.name }}</span>
                         </p>
                     </template>
 
@@ -98,6 +98,7 @@
 
     const authenticated = computed(() => page.props.auth.isAuthenticated);
     const user = computed(() => page.props.auth.user.data);
+    const cartCount = computed(() => page.props.auth.cart_count);
 
 
     /**

@@ -15,19 +15,40 @@
                                 {{ product.description }}
                             </p>
                         </div>
-                        <div class="px-6 pt-4 pb-2">
-                            <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                                ${{ product.price }}
-                            </span>
-                        </div>
+                        <div class="px-6 py-4">
+                            <div class="flex justify-between items-center space-x-2">
+                                <span 
+                                    class="text-sm font-semibold text-gray-500" 
+                                    :class="{'line-through': product.discount}"
+                                >
+                                    ${{ product.price }}
+                                </span>
 
-                        <!-- Quantity Input and Add to Cart Button -->
-                        <form @submit.prevent="addToCart(product)">
+                                <span 
+                                    v-if="product.discount" 
+                                    class="text-xl font-bold text-[#FFBF00]"
+                                >
+                                    ${{ Math.floor(product.price - product.price * (product.discount / 100)) }}
+                                </span>
+                            </div>
+
+                            <div class="flex items-center justify-center">
+                                <span 
+                                    v-if="product.discount" 
+                                    class="mt-2 inline-block bg-[#FFBF00] text-[#fafafa] text-xs font-bold px-2 py-1 rounded"
+                                >
+                                    -{{ product.discount }}% OFF
+                                </span>
+                            </div>
+                            
+                        </div>
+                        <Link :href="user ? null : '/login'">
+
+                            <form @submit.prevent="addToCart(product)">
                             <input 
                                 v-model="product.price"
                                 type="hidden" 
                             />
-                            {{ product.price }}
                             <div class="flex justify-center items-center gap-2">
                                 <input 
                                     type="number" 
@@ -35,22 +56,24 @@
                                     min="1" 
                                     class="w-16 px-2 py-1 border border-gray-300 rounded text-center"
                                     @input="validateQuantity(product)"
+
                                 />
                                 <SecondaryButton 
                                     class="text-sm"
-                                    type="submit"
+                                    type="submit"x
                                     :disabled="loading"
                                 >
                                     {{ loading ? 'Adding...' : 'Add to cart' }}
                                 </SecondaryButton>
                             </div>
 
-                            <!-- Display Success & Error Messages -->
                             <div v-if="messages[product.id]" class="text-sm mt-2" 
                                 :class="messages[product.id].type === 'error' ? 'text-red-500' : 'text-green-500'">
                                 {{ messages[product.id].text }}
                             </div>
                         </form>
+                        </Link>
+                        
                     </div>
                 </div>
             </SwiperSlide>
@@ -74,6 +97,12 @@
             required: true
         }
     });
+
+    const page = usePage();
+
+    const user = computed(() => page.props.auth.user);
+
+
 
     // Reactive Variables
     const cartProducts = ref(props.products.map(product => ({ ...product, quantity: 1 }))); // Local copy

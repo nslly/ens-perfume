@@ -22,13 +22,12 @@ return new class extends Migration
             $table->text('description');
             $table->unsignedInteger('volume');
             $table->unsignedInteger('quantity');
-            $table->decimal('price');
-            $table->decimal('discount');
+            $table->integer('price');
+            $table->integer('discount')->nullable();
             $table->json('images');
             $table->tinyInteger('gender');
             $table->timestamps();
             $table->softDeletes();
-
         });
     }
 

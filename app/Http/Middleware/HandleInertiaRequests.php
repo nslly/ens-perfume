@@ -40,7 +40,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => fn() => Auth::check() ? new UserResource(Auth::user()) : null,
-                'isAuthenticated' => fn() => Auth::check()
+                'isAuthenticated' => fn() => Auth::check(),
+                'cart_count' => fn() => Auth::check() ? Auth::user()->carts()->count() : 0,
             ],
             'logo' => asset('icons/logo.png'),
         ]);
