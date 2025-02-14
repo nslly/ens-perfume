@@ -44,6 +44,10 @@ class HandleInertiaRequests extends Middleware
                 'cart_count' => fn() => Auth::check() ? Auth::user()->carts()->count() : 0,
             ],
             'logo' => asset('icons/logo.png'),
+            'flash' => [
+                'success' => session('success'),
+                'error' => session('error'),
+            ],
         ]);
     }
 }

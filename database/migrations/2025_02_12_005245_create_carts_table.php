@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->foreignIdFor(Product::class)->onDelete('cascade');
             $table->unsignedInteger('quantity');
-            $table->decimal('price');
+            $table->integer('price');
             $table->timestamps();
             $table->softDeletes();
         });

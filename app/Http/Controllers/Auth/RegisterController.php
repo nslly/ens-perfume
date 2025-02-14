@@ -53,8 +53,7 @@ class RegisterController extends Controller
     {
         try {
             $this->authService->register($request->validated());
-
-            return to_route('users.home');
+            return to_route('users.home')->with('success', "Registration successful.");
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Failed to register. Please try again.']);
         }

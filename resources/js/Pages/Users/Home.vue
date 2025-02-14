@@ -31,7 +31,7 @@
     import AppLayout from '@/Layouts/AppLayout.vue';
     import PrimaryButton from '@/Components/Button/Primary.vue';
     import SecondaryButton from '@/Components/Button/Secondary.vue';
-    import ProductCard from '@/Components/Card/ProductCard.vue';
+    import ProductCard from '../Products/ProductCart.vue';
 
     const props = defineProps({
         items: Object

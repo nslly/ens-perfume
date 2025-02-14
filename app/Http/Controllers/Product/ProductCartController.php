@@ -53,8 +53,6 @@ class ProductCartController extends Controller
      */
     public function store(CartRequest $request): RedirectResponse
     {
-
-
         try {
             $this->cartService->store($request->validated());
             return redirect()->back()->with('success', 'Item added to cart successfully!');;
