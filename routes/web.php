@@ -8,6 +8,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\Product\CheckoutController;
 use App\Http\Controllers\Product\ProductCartController;
 
 Route::middleware(['guest'])->group(function () {
@@ -53,6 +54,11 @@ Route::middleware(['auth'])->group(function () {
      */
     Route::get('/cart', [ProductCartController::class, 'index'])->name('products.cart');
     Route::post('/cart', [ProductCartController::class, 'store'])->name('products.cart.store');
+    Route::delete('/cart/{cart}', [ProductCartController::class, 'destroy'])->name('products.cart.destroy');
+    Route::put('/cart/{cart}', [ProductCartController::class, 'update'])->name('products.cart.update');
+
+
+    Route::post('/cart/checkout', [CheckoutController::class, 'store'])->name('products.cart.checkout');
 });
 
 

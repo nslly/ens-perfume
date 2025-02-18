@@ -58,7 +58,7 @@ class AuthService
     public function register(array $formData): User
     {
 
-        $user = User::create([
+        $user = User::query()->create([
             'name' => $formData['name'],
             'email' => $formData['email'],
             'password' => Hash::make($formData['password']),

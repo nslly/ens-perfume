@@ -53,12 +53,12 @@ class LoginController extends Controller
     {
         try {
             if ($this->authService->login($request->validated())) {
-                return to_route('users.home');
+                return to_route('users.home')->with('success', "Login Successful.");
             }
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Something went wrong. Please try again.']);
+            return back()->with('error', 'Something went wrong. Please try again.');
         }
     }
 
@@ -72,9 +72,9 @@ class LoginController extends Controller
         try {
             $this->authService->logout();
 
-            return to_route('users.home');
+            return to_route('users.home')->with('success', "Logout Successful.");
         } catch (\Exception $e) {
-            return back()->withErrors(['error' => 'Failed to logout.']);
+            return back()->with('error', 'Failed to logout.');
         }
     }
 }

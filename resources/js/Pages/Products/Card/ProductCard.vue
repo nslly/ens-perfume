@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="product.maxQuantity">
         <img class="w-full h-64 object-cover" :src="product.image" :alt="product.name" />
         <div class="py-4 flex justify-center items-center flex-col">
             <div class="px-6 py-4">
@@ -71,11 +71,28 @@
                     </div>
 
                 </div>
+                <div class="flex mt-2 justify-center items-center flex-col">
+                    <div class="mt-2 flex justify-center items-center">
+                        <p class="text-sm text-gray-400">
+                            <span class="font-semibold text-[#1F2123]">{{ product.maxQuantity }}</span> available stock
+                        </p>
+                    </div>
+                    <div v-if="product.quantity >= product.maxQuantity" class="mt-2">
+                        <p class="text-red-500 text-sm italic">
+                            Reach limit stock of the item.
+                        </p>
+                    </div>
+                </div>
 
                 
             </form>
 
-            <Alert v-if="messages[product.id]" :type="messages[product.id].type" :message="messages[product.id].text" />
+            <Alert 
+                v-if="alertMessage" 
+                :type="alertType" 
+                :message="alertMessage" 
+            />
+
             
         </div>
     </div>
@@ -97,22 +114,19 @@
             required: true
         }
     });
+
     
-    const page = usePage();
-    const flash = computed(() => page.props.flash);
-
-
-
     /**
      * State
      */
 
+    const alertType = ref('');
+    const alertMessage = ref('');
+    
+    const page = usePage()
+
     const isAuthenticated = computed(() => page.props.auth.isAuthenticated);
 
-    //Message for error and success
-    const messages = ref({}); 
-
-    //loading value 
     const loading = ref(false); 
 
     const computedPrice = (product) => {
@@ -132,18 +146,11 @@
     /**
      * Functions / Methods
      * 
-     * 
      */
 
     const addToCart = async (product) => {
 
-        if (product.quantity < 1) {
-            messages.value[product.id] = { type: 'error', text: "Quantity must be at least 1." };
-            return;
-        }
-
         loading.value = true;
-        messages.value[product.id] = null; 
 
         const form = useForm({
             product_id: product.id,
@@ -151,19 +158,20 @@
             price: product.finalPrice,
         });
 
-        
-
         form.post('/cart', {
             preserveScroll: true,
             onSuccess: () => {
-                messages.value[product.id] = { type: 'success', text: 'Added to cart successfully!' };
+                alertType.value = 'success'
+                alertMessage.value = page.props.flash.success
+                form.reset();
             },
-            onError: (err) => {
-                messages.value[product.id] = { type: 'error', text: err.message || "Failed to add to cart." };
+            onError: () => {
+                alertType.value = 'error'
+                alertMessage.value = page.props.flash.error
             },
             onFinish: () => {
                 loading.value = false;
-            }
+        }
     });
 };
 </script>

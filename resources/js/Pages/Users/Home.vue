@@ -20,8 +20,16 @@
             <ProductCard :products="items"/>
         </div>
 
-    </AppLayout>
+
+
         
+        <Alert 
+            v-if="$page.props.flash.success ?? $page.props.flash.error" 
+            :type="$page.props.flash.success ? 'success' : 'error'" 
+            :message="$page.props.flash.success ?? $page.props.flash.error"
+        />
+
+    </AppLayout>
 
 </template>
 
@@ -32,20 +40,9 @@
     import PrimaryButton from '@/Components/Button/Primary.vue';
     import SecondaryButton from '@/Components/Button/Secondary.vue';
     import ProductCard from '../Products/ProductCart.vue';
+    import Alert from '@/Components/Modal/Alert.vue'
 
     const props = defineProps({
         items: Object
     });
-
-    /**
-     * Functions 
-     * 
-     */
-    const addToCart = (productId) => {
-    router.post('/cart/add', { product_id: productId, quantity: 1 }, {
-        preserveScroll: true
-    });
-};
-
-
 </script>

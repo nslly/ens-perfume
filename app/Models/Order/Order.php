@@ -4,7 +4,9 @@ namespace App\Models\Order;
 
 use App\Models\User;
 use App\Enums\OrderStatus;
+use App\Models\Order\OrderItem;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
@@ -27,5 +29,8 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

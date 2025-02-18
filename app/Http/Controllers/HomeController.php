@@ -19,10 +19,10 @@ class HomeController extends Controller
      * 
      * @return Response
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $products = Product::query()->limit(6)->get();
-        $productResource = ProductResource::collection($products)->toArray(request());
+        $products = Product::query()->where('quantity', '>', 0)->limit(6)->latest()->get();
+        $productResource = ProductResource::collection($products)->toArray($request);
         return $this->renderForm($this->indexInertiaComponent, $productResource);
     }
 }
