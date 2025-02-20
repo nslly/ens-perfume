@@ -88,9 +88,6 @@
         } else {
             form.post('/register', {
                 preserveScroll: true,
-                onSuccess: () => {
-                    console.log('Registration successful')
-                },
                 onError: (err) => {
                     console.log(errors.value)
                     errors.value = { ...err }

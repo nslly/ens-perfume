@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Admin\Admin;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -11,7 +12,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 class PermissionSeeder extends Seeder
 {
 
-    private string $guard_name = 'web';
+    private string $guard_name = 'admin';
 
     /**
      * Run the database seeds.
@@ -66,7 +67,7 @@ class PermissionSeeder extends Seeder
             'name' => 'Admin',
             'guard_name' => $this->guard_name,
         ]);
-        $adminRole->givePermissionTo(Permission::all()); 
+        $adminRole->givePermissionTo(Permission::all());
 
         $merchantRole = Role::create([
             'name' => 'Merchant',
@@ -101,15 +102,16 @@ class PermissionSeeder extends Seeder
             'create reviews',
         ]);
 
-        $admin = User::where('email', 'admin@admin.com')->first();
+        $admin = Admin::where('email', 'admin@admin.com')->first();
         if ($admin) {
             $admin->assignRole($adminRole);
         }
-        $merchant = User::where('email', 'merchant@merchant.com')->first();
+        $merchant = Admin::where('email', 'merchant@merchant.com')->first();
         if ($merchant) {
             $merchant->assignRole($merchantRole);
         }
-        $user = User::where('email', 'john@example.com')->first();
+        $user = Admin::where('email', 'john@example.com')->first();
+
         if ($user) {
             $user->assignRole($userRole);
         }

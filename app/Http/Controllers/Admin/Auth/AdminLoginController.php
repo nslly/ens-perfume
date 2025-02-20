@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin\Auth;
 
-use App\Models\User;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Services\AuthService;
@@ -12,14 +11,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 
-class LoginController extends Controller
+class AdminLoginController extends Controller
 {
 
     use HandleCrudActions;
 
+    protected string $indexInertiaComponent = 'Admin/Authentication/Login';
+
     protected $authService;
 
-    protected string $indexInertiaComponent = 'Users/Authentication/Login';
 
     /**
      *  AuthService constructor
@@ -32,9 +32,8 @@ class LoginController extends Controller
         $this->authService = $service;
     }
 
-
     /**
-     * Display a form to log in a user.
+     * Display a form to log in a admin.
      * 
      * @return Response
      */
@@ -43,7 +42,9 @@ class LoginController extends Controller
         return $this->renderForm($this->indexInertiaComponent);
     }
 
-    /** Store a login user.
+
+
+    /** Store a login admin.
      * 
      * @param LoginRequest $request get the request
      * 
@@ -52,8 +53,8 @@ class LoginController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         try {
-            if ($this->authService->login($request->validated(), 'web')) {
-                return to_route('users.home')->with('success', "Login Successful.");
+            if ($this->authService->login($request->validated(), 'admin')) {
+                return to_route('admin.dashboard')->with('success', "Login Successful.");
             }
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());
@@ -62,8 +63,10 @@ class LoginController extends Controller
         }
     }
 
+
+
     /**
-     * logout the current user.
+     * logout the current admin.
      * 
      * @return RedirectResponse
      */
@@ -72,7 +75,7 @@ class LoginController extends Controller
         try {
             $this->authService->logout();
 
-            return to_route('users.home')->with('success', "Logout Successful.");
+            return to_route('admin.login')->with('success', "Logout Successful.");
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to logout.');
         }

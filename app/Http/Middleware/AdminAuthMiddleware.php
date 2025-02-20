@@ -3,12 +3,11 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class RedirectIfAuthenticated
+class AdminAuthMiddleware
 {
     /**
      * Handle an incoming request.
@@ -17,12 +16,9 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::guard('admin')->check() && $request->is('admin/*')) {
-            return to_route('admin.dashboard');
-        }
 
-        if (Auth::guard('web')->check() && !$request->is('admin/*')) {
-            return to_route('users.home');
+        if (!Auth::guard('admin')->check()) {
+            return to_route('admin.login');
         }
         return $next($request);
     }

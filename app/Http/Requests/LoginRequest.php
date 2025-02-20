@@ -21,8 +21,15 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
+        $isAdmin = $this->routeIs('admin.*');
+
         return [
-            'email' => ['required', 'email', 'string', 'exists:users,email'],
+            'email' => [
+                'required',
+                'email',
+                'string',
+                $isAdmin ? 'exists:admins,email' : 'exists:users,email',
+            ],
             'password' => ['required', 'string'],
             'remember' => ['nullable', 'boolean'],
         ];

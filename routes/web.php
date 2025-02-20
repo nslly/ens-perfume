@@ -31,7 +31,7 @@ Route::middleware(['guest'])->group(function () {
     });
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:web'])->group(function () {
 
     /**
      * 
@@ -66,17 +66,29 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware([RedirectIfAuthenticated::class])->group(function () {
+Route::middleware(['alreadyAuth'])->group(function () {
 
     /**
      * 
      * Authentication 
      */
-    Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
+    Route::get('/register', [RegisterController::class, 'index'])->name('register');
     Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
-    Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
     Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+});
+
+
+/**
+ * ---------------------
+ * 
+ * 404 Not found 
+ * 
+ * ---------------------
+ */
+Route::fallback(function () {
+    return Inertia::render('Errors/404');
 });
 
 
@@ -95,3 +107,16 @@ Route::get('/brand', function () {
 Route::get('/about-us', function () {
     return Inertia::render('Users/About');
 })->name('users.about');
+
+
+
+/**
+ * ---------------------
+ *  Admin Route
+ * ------------------ 
+ */
+
+
+Route::get('/admin', function () {
+    return redirect('/admin/login');
+});

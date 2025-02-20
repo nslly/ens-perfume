@@ -74,12 +74,14 @@
 </template>
 
 <script setup>
-    import { Head, router, usePage, useForm } from '@inertiajs/vue3';
+    import { Head, router, useForm } from '@inertiajs/vue3';
     import { defineProps, computed, ref } from 'vue';
     import AppLayout from '@/Layouts/AppLayout.vue';
     import Alert from '@/Components/Modal/Alert.vue'
     import PrimaryButton from '@/Components/Button/Primary.vue';
     import Modal from '@/Components/Modal/Modal.vue';
+    import { useAuth } from '@/Composables/useAuth';
+
 
 
 
@@ -97,8 +99,8 @@
     const deleteModal = ref(false);
     const alertType = ref('');
     const alertMessage = ref('');
-    const page  = usePage();  
-    const user = computed(() => page.props.auth.user.data);
+    const { user, page } = useAuth();
+
     
     // Computed property to calculate total price
     const totalPrice = computed(() => {

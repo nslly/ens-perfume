@@ -52,7 +52,7 @@
 
                     />
 
-                    <div v-if="isAuthenticated">
+                    <div v-if="authenticated">
                         <SecondaryButton 
                             class="text-sm"
                             type="submit"
@@ -100,10 +100,12 @@
 </template>
 
 <script setup>
-    import { defineProps, ref, computed } from "vue";
-    import { useForm, usePage, Link } from '@inertiajs/vue3'
+    import { defineProps, ref } from "vue";
+    import { useForm, Link } from '@inertiajs/vue3'
     import SecondaryButton from '@/Components/Button/Secondary.vue';
     import Alert from '@/Components/Modal/Alert.vue'
+    import { useAuth } from '@/Composables/useAuth';
+
 
     /**
      * Props
@@ -120,13 +122,12 @@
      * State
      */
 
+    const { authenticated, page } = useAuth();
+
+
     const alertType = ref('');
     const alertMessage = ref('');
     
-    const page = usePage()
-
-    const isAuthenticated = computed(() => page.props.auth.isAuthenticated);
-
     const loading = ref(false); 
 
     const computedPrice = (product) => {

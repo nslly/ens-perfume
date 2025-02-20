@@ -3,7 +3,7 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center ">
             <div>
                 <Link href="/" class="text-blue-500">
-                    <img :src="page.props.logo" alt="logo" class="mx-auto h-[80px] w-[80px]">
+                    <img :src="logo" alt="logo" class="mx-auto h-[80px] w-[80px]">
                 </Link>
             </div>  
             <div class="flex justify-between items-center">
@@ -31,7 +31,7 @@
                 </ul>
             </div>
             <div class="flex items-center justify-between space-x-8">
-                <Link :href="page.props.auth.user ? '/cart' : '/login'">
+                <Link :href="user ? '/cart' : '/login'">
                     <div class="relative">
                         <i class="material-icons text-[#0D0D60]">shopping_bag</i>
                         <div v-if="cartCount" class="absolute -bottom-2 -right-2 bg-[#FFBF00] rounded-full w-5 h-5 flex items-center justify-center text-xs text-[#fafafa]">
@@ -83,24 +83,19 @@
 </template>
 
 <script setup>
-    import { Link, usePage, router } from '@inertiajs/vue3';
-    import { computed } from 'vue';
+    import { Link, router } from '@inertiajs/vue3';
     import PrimaryButton from '@/Components/Button/Primary.vue';
     import Dropdown from '@/Components/Dropdown/Dropdown.vue';
+    import { useAuth } from '@/Composables/useAuth';
 
     /**
      * 
      * State
      */
-    const page = usePage();
 
+    const { authenticated, user, cartCount, logo } = useAuth();
 
-
-    const authenticated = computed(() => page.props.auth.isAuthenticated);
-    const user = computed(() => page.props.auth.user.data);
-    const cartCount = computed(() => page.props.auth.cart_count);
-
-
+    
     /**
      * 
      * Functions

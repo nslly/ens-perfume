@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Admin\Admin;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,14 +20,14 @@ class AuthService
      * Log in a user.
      *
      * @param array $credentials
-     * 
+     * @param string $guard a ('web' for users, 'admin' for admins)
      * @return bool
      */
-    public function login(array $formData): bool
+    public function login(array $formData, string $guard): bool
     {
         $remember = $formData['remember'] ?? false;
         unset($formData['remember']);
-        if (Auth::attempt($formData, $remember)) {
+        if (Auth::guard($guard)->attempt($formData, $remember)) {
             session()->regenerate();
             return true;
         }
@@ -43,7 +44,8 @@ class AuthService
      */
     public function logout(): void
     {
-        Auth::logout();
+        Auth::guard('web')->logout();
+        Auth::guard('admin')->logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
     }

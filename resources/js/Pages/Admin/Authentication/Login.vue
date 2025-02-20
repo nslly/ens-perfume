@@ -1,11 +1,11 @@
 <template>
-    <Head title="Login" />
+    <Head title="Admin Login" />
 
-    <AppLayout>
-        <div class="flex justify-start items-center h-screen flex-col py-8">
+    <div class="flex items-center justify-center w-screen h-screen bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-md w-[550px]">
+            <h1 class="text-2xl font-bold flex justify-center items-center">Admin Login</h1>
             <form @submit.prevent="login">
-                <div class="bg-[#fafafa] w-[550px] py-8 px-6 rounded-xl space-y-8 shadow-md">
-                    <h1 class="text-2xl font-bold flex justify-center items-center">Sign In</h1>
+                <div class="py-8 px-6 rounded-xl space-y-8">
                     <div class="space-y-6">
                         <TextInput 
                             v-model="form.email" 
@@ -27,47 +27,29 @@
                         />
                     </div>
                     <p v-if="errors.error" class="text-red-500 text-sm">{{ errors.error }}</p>
-
+                    
                     <div class="flex justify-between items-center spacex-8">
                         <Checkbox v-model="form.remember" label="Remember Me" />
-                        <div>
-                            <Link href="/forgot-password" class="text-sm font-semibold text-[#0D0D60]">
-                                <p>Forgot Password?</p>
-                            </Link>
-
-                        </div>
                     </div>
                     <div class="w-full">
                         <PrimaryButton type="submit" class="text-lg w-full">
                             Login 
                         </PrimaryButton>
                     </div>
-                    <div class="flex justify-center items-center space-x-8">
-                        <p class="text-sm">Not registered yet?</p>
-                        <Link href="/register" class="text-sm font-semibold text-[#0D0D60]">
-                            Create an Account
-                        </Link>
-                    </div>
 
                 </div>
             </form>
 
-
         </div>
-    </AppLayout>
-
-
-
-
+    </div>
 </template>
 
 <script setup>
-    import { Head, Link, useForm } from '@inertiajs/vue3'
-    import { ref } from 'vue'
-    import TextInput from '@/Components/Input/Textbox.vue'
-    import Checkbox from '@/Components/Input/Checkbox.vue'
+    import { Head, useForm } from '@inertiajs/vue3';
+    import { ref } from 'vue';
+    import TextInput from '@/Components/Input/Textbox.vue';
     import PrimaryButton from '@/Components/Button/Primary.vue';
-    import AppLayout from '../../../Layouts/AppLayout.vue';
+    import Checkbox from '@/Components/Input/Checkbox.vue';
 
 
     /**
@@ -92,16 +74,16 @@
 
 
     const login = () => {
-        form.post('/login', {
+        form.post('/admin/login', {
             preserveScroll: true,
             onSuccess: () => {
                 console.log('Login successful')
             },
             onError: (err) => {
-                errors.value = { ...err }
                 console.log(err);
+                errors.value = { ...err }
             }
-        })
+        });
         
     };
 </script>

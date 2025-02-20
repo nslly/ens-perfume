@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Admin\Admin;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -24,8 +24,6 @@ class UserSeeder extends Seeder
                 'name' => 'Admin',
                 'email' => 'admin@admin.com',
                 'password' => Hash::make('password'),
-                'phone_number' => '09145248745',
-                'address' => 'Manila, Metro Manila',
                 'remember_token' => Str::random(10),
                 'email_verified_at' => now(),
             ],
@@ -33,8 +31,6 @@ class UserSeeder extends Seeder
                 'name' => 'Merchant',
                 'email' => 'merchant@merchant.com',
                 'password' => Hash::make('password'),
-                'phone_number' => '09145242414',
-                'address' => 'Manila, Metro Manila',
                 'remember_token' => Str::random(10),
                 'email_verified_at' => now(),
             ],
@@ -42,8 +38,6 @@ class UserSeeder extends Seeder
                 'name' => 'John Doe',
                 'email' => 'john@example.com',
                 'password' => Hash::make('password'),
-                'phone_number' => '09145244561',
-                'address' => 'Manila, Metro Manila',
                 'remember_token' => Str::random(10),
                 'email_verified_at' => now(),
             ],
@@ -59,12 +53,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::query()->truncate();
+        Admin::query()->truncate();
 
-        foreach($this->sampleUser() as $data)
-        {
-            User::query()->create($data);
+        foreach ($this->sampleUser() as $data) {
+
+            Admin::query()->create($data);
         }
-        
     }
 }

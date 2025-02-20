@@ -41,7 +41,11 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => fn() => Auth::check() ? new UserResource(Auth::user()) : null,
                 'isAuthenticated' => fn() => Auth::check(),
-                'cart_count' => fn() => Auth::check() ? Auth::user()->carts()->count() : 0,
+                'cart_count' => fn() => (
+                    Auth::check() && !$request->is('admin/*')
+                    ? Auth::user()->carts()->count()
+                    : 0
+                ),
             ],
             'logo' => asset('icons/logo.png'),
             'flash' => [
