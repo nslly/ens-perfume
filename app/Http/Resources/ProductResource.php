@@ -2,8 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Enums\GenderIdentification;
 use Illuminate\Http\Request;
+use App\Enums\GenderIdentification;
+use Illuminate\Validation\Rules\Enum;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -26,7 +27,7 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'discount' => $this->discount,
             'images' => $this->images,
-            'gender' => $this->gender->value ?? null,
+            'gender' => GenderIdentification::tryFrom($this->gender->value)?->name,
         ];
     }
 }

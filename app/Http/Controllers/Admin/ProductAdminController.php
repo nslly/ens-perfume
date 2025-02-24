@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product\Product;
 use App\Traits\HandleCrudActions;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
 
@@ -39,7 +40,7 @@ class ProductAdminController extends Controller
      */
     private function getProduct(): Collection
     {
-        return Product::with($this->getRelationships())
+        return Product::query()->with($this->getRelationships())
             ->latest()
             ->get();
     }
@@ -53,7 +54,16 @@ class ProductAdminController extends Controller
     public function index(Request $request): Response
     {
 
-        $products = ProductResource::collection(Product::all())->toArray($request);
-        return $this->renderForm($this->indexInertiaComponent, $products);
+        try {
+            $products = Product::query()->with($this->getRelationships())
+                ->latest()
+                ->paginate(8);    
+            $productsResource = ProductResource::collection($products);
+            return $this->renderForm($this->indexInertiaComponent, ['items' => $productsResource]);
+        } catch (\Exception $e) {
+            // Log the error and return a friendly response
+            Log::error('Error fetching products: ' . $e->getMessage());
+            return $this->renderForm($this->indexInertiaComponent, ['error' => 'Unable to fetch products.']);
+        }
     }
 }
