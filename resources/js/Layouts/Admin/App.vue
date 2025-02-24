@@ -7,7 +7,7 @@
             <!-- Navbar -->
             <Navbar @toggle-sidebar="toggleSideBar" />
 
-            <div class="px-8">
+            <div class="py-8 px-6">
                 <slot />
             </div>
         </div>

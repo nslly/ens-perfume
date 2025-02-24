@@ -8,6 +8,7 @@ use App\Services\AuthService;
 use App\Traits\HandleCrudActions;
 use App\Http\Requests\LoginRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\ValidationException;
 
@@ -54,7 +55,9 @@ class AdminLoginController extends Controller
     {
         try {
             if ($this->authService->login($request->validated(), 'admin')) {
-                return to_route('admin.dashboard')->with('success', "Login Successful.");
+                $admin = Auth::guard('admin')->user()->name;
+
+                return to_route('admin.dashboard')->with('success', "Welcome $admin");
             }
         } catch (ValidationException $e) {
             return back()->withErrors($e->errors());

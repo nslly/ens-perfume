@@ -24,6 +24,7 @@ class AdminDashboardController extends Controller
      */
     public function index(): Response
     {
+
         return $this->renderForm($this->indexInertiaComponent);
     }
 }

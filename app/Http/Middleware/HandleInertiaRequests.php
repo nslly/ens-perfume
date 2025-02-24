@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\Admin\AdminResource;
 use Inertia\Middleware;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
@@ -37,20 +38,25 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = Auth::guard('web')->user();
+        $admin = Auth::guard('admin')->user();
+        $isUser = !is_null($user);
+        $isAdmin = !is_null($admin);
+
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => fn() => Auth::check() ? new UserResource(Auth::user()) : null,
-                'isAuthenticated' => fn() => Auth::check(),
-                'cart_count' => fn() => (
-                    Auth::check() && !$request->is('admin/*')
-                    ? Auth::user()->carts()->count()
-                    : 0
-                ),
+                'user' => $isUser ? new UserResource($user) : null,
+                'isUserAuthenticated' => $isUser,
+                'admin' => $isAdmin ? new AdminResource($admin) : null,
+                'isAdminAuthenticated' => $isAdmin,
             ],
+
+            'cart_count' => $isUser ? $user->carts()->count() : 0,
+
             'logo' => asset('icons/logo.png'),
             'flash' => [
-                'success' => session('success'),
-                'error' => session('error'),
+                'success' => session()->has('success') ? session('success') : null,
+                'error' => session()->has('error') ? session('error') : null,
             ],
         ]);
     }

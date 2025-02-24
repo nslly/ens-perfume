@@ -76,11 +76,7 @@
     const login = () => {
         form.post('/admin/login', {
             preserveScroll: true,
-            onSuccess: () => {
-                console.log('Login successful')
-            },
             onError: (err) => {
-                console.log(err);
                 errors.value = { ...err }
             }
         });

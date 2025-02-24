@@ -4,10 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
-
-
-
-
+use App\Http\Controllers\Admin\ProductAdminController;
 
 /**
  * ---------------------
@@ -20,6 +17,9 @@ use App\Http\Controllers\Admin\Auth\AdminLoginController;
 Route::middleware(['admin'])->prefix('admin')->group(function () {
 
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+
+    Route::get('products', [ProductAdminController::class, 'index'])->name('products.index');
 
 
     /**

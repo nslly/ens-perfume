@@ -44,10 +44,32 @@ class AuthService
      */
     public function logout(): void
     {
-        Auth::guard('web')->logout();
-        Auth::guard('admin')->logout();
-        request()->session()->invalidate();
-        request()->session()->regenerateToken();
+        $guard = $this->getAuthenticatedGuard();
+
+        if ($guard) {
+            Auth::guard($guard)->logout();
+            session()->invalidate();
+            session()->regenerateToken();
+        }
+    }
+
+
+    /**
+     * Get the currently authenticated guard.
+     *
+     * @return string|null
+     */
+    protected function getAuthenticatedGuard(): ?string
+    {
+        if (Auth::guard('admin')->check()) {
+            return 'admin';
+        }
+
+        if (Auth::guard('web')->check()) {
+            return 'web';
+        }
+
+        return null;
     }
 
     /**

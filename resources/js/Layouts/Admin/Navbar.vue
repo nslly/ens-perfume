@@ -1,10 +1,15 @@
 <template>
-    <div class="bg-white flex items-center justify-between shadow-sm px-6 w-full py-[18px] z-10 border-b">
+    <div class="bg-[#f2f2f2] flex items-center justify-between  border-gray-200 px-6 w-full py-[18px] z-10 border-b">
         <div class="cursor-pointer w-[30px]" @click="toggleSidebar">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-[25px] h-[25px]">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-[25px] text-[#0D0D60] h-[25px]">
                 <path
                     d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32-14.3 32 32z" />
             </svg>
+        </div>
+        <div>
+            <Link href="/">
+                <img :src="logo" alt="logo" class="mx-auto h-[80px] w-[80px]">
+            </Link>
         </div>
 
         <!-- <div class="w-full flex justify-center">
@@ -28,7 +33,7 @@
                 <template #trigger>
                     <p class="text-sm flex items-center space-x-1 font-medium text-[#0D0D60]">
                         <i class="material-icons">account_circle</i>
-                        <span class="text-[#1F2123]">{{ user.name }}</span>
+                        <span class="text-[#1F2123]">{{ admin.name }}</span>
                     </p>
                 </template>
 
@@ -66,7 +71,7 @@
     };
 
 
-    const { authenticated, user, cartCount, logo } = useAuth();
+    const { admin, logo } = useAuth();
 
 
     

@@ -35,11 +35,11 @@
                     </div>
 
                     <!-- Remove Button -->
-                    <Modal v-model:show="deleteModal" title="Delete Item" @confirm="removeItem(cart.id)" confirmText="Delete">
+                    <Modal v-model:show="deleteModal" title="Delete Item" @confirm="removeItem" confirmText="Delete">
                         <p>Are you sure you want to delete this cart?</p>
                             
                     </Modal>
-                    <button @click="deleteModal = true" class="ml-4 text-red-600 hover:text-red-800">
+                    <button @click="openDeleteModal(cart.id)" class="ml-4 text-red-600 hover:text-red-800">
                         Remove
                     </button>
                     
@@ -99,6 +99,7 @@
     const deleteModal = ref(false);
     const alertType = ref('');
     const alertMessage = ref('');
+    const itemToDelete = ref(null);
     const { user, page } = useAuth();
 
     
@@ -108,10 +109,19 @@
     });
 
 
-
     /**------------------  
         Methods
     ------------------*/
+
+
+    
+
+
+    const openDeleteModal = (id) => {
+        itemToDelete.value = id;
+        deleteModal.value = true;
+    };
+
 
     const increaseQuantity = (cart) => {
         if(cart.product.data.quantity <= cart.quantity) return;
@@ -156,8 +166,8 @@
         })
     } 
 
-    const removeItem = async (id) => {
-        router.delete(`/cart/${id}`, {
+    const removeItem = async () => {
+        router.delete(`/cart/${itemToDelete.value}`, {
             preserveScroll: true,
             onSuccess: () => {
                 alertType.value = 'success';
@@ -170,5 +180,7 @@
                 alertMessage.value = page.props.flash.error;
             },
         });
+        itemToDelete.value = null;
+
     };
 </script>
