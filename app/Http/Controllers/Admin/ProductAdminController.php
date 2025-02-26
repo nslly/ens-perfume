@@ -10,12 +10,22 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductResource;
+use App\Services\AdminProductService;
 
 class ProductAdminController extends Controller
 {
     use HandleCrudActions;
 
     protected string $indexInertiaComponent = "Admin/Products/Index";
+
+    protected $productService;
+
+
+
+    // public function __construct(AdminProductService $service)
+    // {
+    //     $this->productService = $service;
+    // }
 
 
 
@@ -34,16 +44,17 @@ class ProductAdminController extends Controller
 
 
 
-    /**
-     * Get the cart for the authenticated user
-     * @return Collection
-     */
-    private function getProduct(): Collection
-    {
-        return Product::query()->with($this->getRelationships())
-            ->latest()
-            ->get();
-    }
+    // /**
+    //  * Get the cart for the authenticated user
+    //  * @return Collection
+    //  */
+    // private function getProduct(): Collection
+    // {
+    //     return Product::query()->with($this->getRelationships())
+    //         ->latest()
+    //         ->get();
+    // }
+
 
 
     /**
@@ -57,11 +68,13 @@ class ProductAdminController extends Controller
         try {
             $products = Product::query()->with($this->getRelationships())
                 ->latest()
-                ->paginate(8);    
+                ->paginate(8);
             $productsResource = ProductResource::collection($products);
-            return $this->renderForm($this->indexInertiaComponent, ['items' => $productsResource]);
+            return $this->renderForm(
+                $this->indexInertiaComponent,
+                $this->setItemsAndPaginate($productsResource, $products)
+            );
         } catch (\Exception $e) {
-            // Log the error and return a friendly response
             Log::error('Error fetching products: ' . $e->getMessage());
             return $this->renderForm($this->indexInertiaComponent, ['error' => 'Unable to fetch products.']);
         }

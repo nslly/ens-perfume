@@ -18,13 +18,13 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
-                    <tr v-if="items.items.data.length === 0">
+                    <tr v-if="items.resource.data.length === 0">
                         <td colspan="9" class="px-4 py-6 text-center text-gray-500">
                             No products found.
                         </td>
                     </tr>
                     <tr
-                        v-for="product in items.items.data"
+                        v-for="product in items.resource.data"
                         :key="product.id"
                         class="hover:bg-gray-50 transition-colors"
                     >
@@ -93,19 +93,49 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div class="mt-6 flex items-center justify-end space-x-4">
+            <button 
+                :disabled="!pagination.prev_page_url" 
+                @click="goToPage(pagination.prev_page_url)" 
+                class="px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-300"
+                :class="pagination.prev_page_url ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
+            >
+                Previous
+            </button>
 
+            <span class="text-gray-700 text-sm">
+                Page {{ pagination.current_page }} of {{ pagination.last_page }}
+            </span>
+
+            <button 
+                :disabled="!pagination.next_page_url" 
+                @click="goToPage(pagination.next_page_url)" 
+                class="px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-300"
+                :class="pagination.next_page_url ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
+            >
+                Next
+            </button>
         </div>
     </AppLayout>
 </template>
 
 <script setup>
     import AppLayout from '@/Layouts/Admin/App.vue';
-    import { Head } from '@inertiajs/vue3';
+    import { Head, router } from '@inertiajs/vue3';
+    import { ref } from 'vue'
 
     const props = defineProps({
         items: Object,
     });
 
-    console.log(props.items)
+    const pagination = ref(props.items.pagination);
+
+    const goToPage = (url) => {
+        if (url) {
+            router.get(url);
+        }
+    };
+
 
 </script>
