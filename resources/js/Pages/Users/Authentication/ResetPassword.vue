@@ -2,9 +2,9 @@
     <Head title="Reset Password" />
     
     <AppLayout>
-        <div class="flex justify-center items-center h-screen">
+        <div class="flex items-center justify-center h-screen">
             <form @submit.prevent="submit">
-                <div class="bg-white w-96 p-6 rounded-lg shadow-md space-y-6">
+                <div class="p-6 space-y-6 bg-white rounded-lg shadow-md w-96">
                     <h1 class="text-xl font-bold text-center">Reset Password</h1>
                     
                     <TextInput
@@ -35,7 +35,7 @@
                         Reset Password
                     </PrimaryButton>
 
-                    <p v-if="status" class="text-green-500 text-sm text-center">
+                    <p v-if="status" class="text-sm text-center text-green-500">
                         {{ status }}
                     </p>
 

@@ -3,10 +3,10 @@
 
     <AppLayout>
         <div class="h-full p-6 bg-white rounded-lg shadow-md">
-            <h1 class="text-2xl font-bold mb-4">Edit Product</h1>
+            <h1 class="mb-4 text-2xl font-bold">Edit Product</h1>
 
             <form @submit.prevent="updateProduct(items.product.slug)">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <!-- Product Name -->
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
@@ -14,7 +14,8 @@
                             id="name"
                             v-model="form.name"
                             type="text"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
+                            
                         />
                     </div>
 
@@ -24,7 +25,7 @@
                         <select 
                             id="category"
                             v-model="form.category_id"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         >
                             <option v-for="category in categories" :key="category.id" :value="category.id">
                                 {{ category.name }}
@@ -38,7 +39,7 @@
                         <select 
                             id="brand"
                             v-model="form.brand_id"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         >
                             <option v-for="brand in brands" :key="brand.id" :value="brand.id">
                                 {{ brand.name }}
@@ -54,7 +55,7 @@
                             v-model="form.volume"
                             type="number"
                             min="1"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         />
                     </div>
 
@@ -66,7 +67,7 @@
                             v-model="form.quantity"
                             type="number"
                             min="1"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         />
                     </div>
 
@@ -78,7 +79,7 @@
                             v-model="form.price"
                             type="number"
                             step="0.01"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         />
                     </div>
 
@@ -92,7 +93,7 @@
                             step="0.01"
                             min="0"
                             max="100"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         />
                     </div>
 
@@ -102,7 +103,7 @@
                         <select 
                             id="gender"
                             v-model="form.gender"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         >
                             <option value="1">Male</option>
                             <option value="2">Female</option>
@@ -117,12 +118,12 @@
                             id="image"
                             type="file"
                             @change="handleImageUpload"
-                            class="mt-1 p-2 w-full border rounded"
+                            class="w-full p-2 mt-1 border rounded"
                         />
 
                         <!-- Preview Uploaded Image -->
                         <!-- <div v-if="imagePreview" class="mt-3">
-                            <img :src="imagePreview" alt="Product Image" class="w-32 h-32 object-cover rounded">
+                            <img :src="imagePreview" alt="Product Image" class="object-cover w-32 h-32 rounded">
                         </div> -->
                     </div>
                 </div>
@@ -133,7 +134,7 @@
                     <textarea 
                         id="description"
                         v-model="form.description"
-                        class="mt-1 p-2 w-full border rounded"
+                        class="w-full p-2 mt-1 border rounded"
                     ></textarea>
                 </div>
 

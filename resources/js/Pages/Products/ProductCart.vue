@@ -1,12 +1,12 @@
 <template>
-    <div class="max-w-7xl mx-auto relative">
+    <div class="relative mx-auto max-w-7xl">
         <Swiper 
             v-bind="swiperConfig" 
             :modules="[Navigation, Pagination]"
             class="mySwiper product-carousel"
         >
             <SwiperSlide v-for="product in cartProducts" :key="product.id">
-                <div class="max-w-sm rounded overflow-hidden shadow-lg flex flex-col items-center justify-center bg-white mx-auto">
+                <div class="flex flex-col items-center justify-center max-w-sm mx-auto overflow-hidden bg-white rounded shadow-lg">
                     <ProductCard :product="product"/>
                 </div>
             </SwiperSlide>
@@ -16,8 +16,6 @@
 
 <script setup>
     import { defineProps, ref } from "vue";
-    import { Swiper, SwiperSlide } from "swiper/vue";
-    import { Navigation, Pagination } from 'swiper/modules';
     import { swiperConfig } from '@/Utils/swiper.js';
 
     import ProductCard from './Card/ProductCard.vue';
