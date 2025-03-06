@@ -7,7 +7,7 @@
             </svg>
         </div>
         <div>
-            <Link href="/">
+            <Link href="/admin">
                 <img :src="logo" alt="logo" class="mx-auto h-[80px] w-[80px]">
             </Link>
         </div>
@@ -61,7 +61,7 @@
 
 <script setup>
     import Dropdown from '@/Components/Dropdown/Dropdown.vue';
-    import { router } from '@inertiajs/vue3';
+    import { router, Link } from '@inertiajs/vue3';
     import { useAuth } from '@/Composables/useAuth.js';
     import { defineEmits } from 'vue';
     

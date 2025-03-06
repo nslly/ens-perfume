@@ -1,9 +1,9 @@
 <template>
-    <div class="w-screen h-screen flex overflow-hidden">
+    <div class="w-screen flex overflow-hidden">
         <Sidebar :showSide="showSide" />
 
         <!-- Main content -->
-        <div class="w-full bg-gray-100">
+        <div class="w-full h-full bg-gray-100">
             <!-- Navbar -->
             <Navbar @toggle-sidebar="toggleSideBar" />
 

@@ -36,9 +36,9 @@ class CartService
      * 
      * @param Cart $cart
      * @param array $formData
-     * @return mixed 
+     * @return Cart
      */
-    public function update(Cart $cart, array $formData)
+    public function update(Cart $cart, array $formData): Cart
     {
         $cart->update([
             'quantity' => $formData['quantity'],

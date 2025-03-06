@@ -18,9 +18,12 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
 
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
-
+    Route::get('products/create', [ProductAdminController::class, 'create'])->name('products.create');
+    Route::post('products', [ProductAdminController::class, 'store'])->name('products.store');
     Route::get('products', [ProductAdminController::class, 'index'])->name('products.index');
-
+    Route::get('products/{product}/edit', [ProductAdminController::class, 'edit'])->name('products.edit');
+    Route::put('products/{product}', [ProductAdminController::class, 'update'])->name('products.update');
+    Route::delete('products/{product}', [ProductAdminController::class, 'destroy'])->name('products.destroy');
 
     /**
      * 

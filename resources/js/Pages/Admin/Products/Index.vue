@@ -3,6 +3,17 @@
 
     <AppLayout>
         <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+            <div class="flex px-4 py-6 justify-end items-center">
+                <Link href="/admin/products/create">
+                    <PrimaryButton>
+                        Create Product 
+                        <i class="material-icons mr-2 text-2xl fill-current">
+                            add
+                        </i>
+
+                    </PrimaryButton>
+                </Link>
+            </div>
             <table class="min-w-full">
                 <thead class="bg-blue-500 text-white">
                     <tr>
@@ -45,31 +56,39 @@
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-700">{{ product.volume }} ml</td>
                         <td class="px-4 py-3 text-sm text-gray-700">{{ product.quantity }}</td>
-                        <td class="px-4 py-3 text-sm font-semibold text-green-600">₱{{ product.price.toFixed(2) }}</td>
+                        <td class="px-4 py-3 text-sm font-semibold text-green-600">₱{{ product.price }}</td>
                         <td class="px-4 py-3 text-sm text-red-500">{{ product.discount }}%</td>
                         <td class="px-4 py-3 text-sm text-gray-700 capitalize">{{ product.gender }}</td>
                         <td class="px-4 py-3 text-sm">
                             <div class="flex space-x-2">
-                                <button
+                                <Link :href="`/admin/products/${product.slug}/edit`">
+                                    <button
                                     class="flex items-center bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
-                                >
-                                    <svg
-                                        class="w-4 h-4 mr-1"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
                                     >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                                        ></path>
-                                    </svg>
-                                    Edit
-                                </button>
+                                        <svg
+                                            class="w-4 h-4 mr-1"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                            ></path>
+                                        </svg>
+                                        Edit
+                                    </button>
+                                </Link>
+                                <!-- Remove Button -->
+                                <Modal v-model:show="deleteModal" title="Delete Item" @confirm="removeItem" confirmText="Delete">
+                                    <p>Are you sure you want to delete this cart?</p>
+                                        
+                                </Modal>
                                 <button
+                                    @click="openDeleteModal(product.slug)" 
                                     class="flex items-center bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
                                 >
                                     <svg
@@ -88,6 +107,7 @@
                                     </svg>
                                     Delete
                                 </button>
+
                             </div>
                         </td>
                     </tr>
@@ -122,20 +142,67 @@
 
 <script setup>
     import AppLayout from '@/Layouts/Admin/App.vue';
-    import { Head, router } from '@inertiajs/vue3';
+    import { Head, router, Link } from '@inertiajs/vue3';
     import { ref } from 'vue'
+    import Modal from '@/Components/Modal/Modal.vue';
+    import Alert from '@/Components/Modal/Alert.vue';
+    import PrimaryButton from '@/Components/Button/Primary.vue';
+
+    import { useAuth } from '@/Composables/useAuth';
+
+
+
 
     const props = defineProps({
         items: Object,
     });
 
+    const deleteModal = ref(false);
+    const itemToDelete = ref(null);
+    const alertType = ref('');
+    const alertMessage = ref('');
+    const { page } = useAuth();
+
+
+
+
+    // Pagination
     const pagination = ref(props.items.pagination);
 
+
+    // Go to the next or previous page
     const goToPage = (url) => {
         if (url) {
             router.get(url);
         }
     };
+
+
+    
+    const openDeleteModal = (slug) => {
+        itemToDelete.value = slug;
+        deleteModal.value = true;
+    };
+
+
+    const removeItem = async () => {
+        router.delete(`/admin/products/${itemToDelete.value}`, {
+            preserveScroll: true,
+            onSuccess: () => {
+                alertType.value = 'success';
+                alertMessage.value = page.props.flash.success;
+                deleteModal.value = false;
+
+            },
+            onError: () => {
+                alertType.value = 'error';
+                alertMessage.value = page.props.flash.error;
+            },
+        });
+        itemToDelete.value = null;
+
+    };
+
 
 
 </script>
