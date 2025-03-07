@@ -33,7 +33,7 @@
     const props = defineProps({
         label: String,        // Input label
         placeholder: String,  // Placeholder text
-        modelValue: String,   // v-model support
+        modelValue: [String, Number],   // v-model support
         type: {
             type: String,
             default: 'text'  // Default type is text
