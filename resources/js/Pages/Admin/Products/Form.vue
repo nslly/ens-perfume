@@ -8,37 +8,30 @@
                 placheholder="Enter Product"
                 v-model="form.name"
                 type="text"
-                class="w-full p-2 mt-1 border rounded"
                 :error="errors.name ?? ''"
             />
         </div>
 
         <!-- Category -->
         <div>
-            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
-            <select 
-                id="category"
+            <SelectInput 
                 v-model="form.category_id"
-                class="w-full p-2 mt-1 border rounded"
-            >
-                <option v-for="category in categories" :key="category.id" :value="category.id">
-                    {{ category.name }}
-                </option>
-            </select>
+                label="Category"
+                :options="categories"
+                placeholder="Choose a category"
+                :error="errors.category_id ?? ''"
+            />
         </div>
 
         <!-- Brand -->
         <div>
-            <label for="brand" class="block text-sm font-medium text-gray-700">Brand</label>
-            <select 
-                id="brand"
+             <SelectInput 
                 v-model="form.brand_id"
-                class="w-full p-2 mt-1 border rounded"
-            >
-                <option v-for="brand in brands" :key="brand.id" :value="brand.id">
-                    {{ brand.name }}
-                </option>
-            </select>
+                label="Brand"
+                :options="brands"
+                placeholder="Choose a brand"
+                :error="errors.brand_id ?? ''"
+            />
         </div>
 
         <!-- Volume -->
@@ -50,7 +43,6 @@
                 v-model="form.volume"
                 type="number"
                 min=1
-                class="w-full p-2 mt-1 border rounded"
                 :error="errors.volume ?? ''"
             />
         </div>
@@ -99,16 +91,17 @@
 
         <!-- Gender -->
         <div>
-            <label for="gender" class="block text-sm font-medium text-gray-700">Gender</label>
-            <select 
-                id="gender"
+            <SelectInput 
                 v-model="form.gender"
-                class="w-full p-2 mt-1 border rounded"
-            >
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-                <option value="3">Unisex</option>
-            </select>
+                label="Gender"
+                :options="[
+                    { id: '1', name: 'Male' },
+                    { id: '2', name: 'Female' },
+                    { id: '3', name: 'Unisex' }
+                ]"
+                placeholder="Choose Gender"
+                :error="errors.gender ?? ''"
+            />
         </div>
 
         <!-- Image Upload -->
@@ -118,14 +111,21 @@
                 id="image"
                 type="file"
                 @change="handleImageUpload"
-                class="w-full p-2 mt-1 border rounded"
-                :error="errors.image ?? ''"
+                multiple
+                :error="errors.images ?? ''"
             />
 
-            <!-- Preview Uploaded Image -->
-            <!-- <div v-if="imagePreview" class="mt-3">
-                <img :src="imagePreview" alt="Product Image" class="object-cover w-32 h-32 rounded">
-            </div> -->
+             <!-- Preview New Uploaded Images -->
+            <div v-if="imagePreview.length" class="grid grid-cols-3 gap-2 mt-3">
+                <img v-for="(image, index) in imagePreview" :key="index" :src="image" alt="Preview"
+                    class="object-cover w-32 h-32 rounded">
+            </div>
+
+            <!-- Display Existing Images from JSON -->
+            <div v-if="form.images" class="grid grid-cols-3 gap-2 mt-3">
+                <img v-for="(image, index) in images" :key="index" :src="image" alt="Existing Image"
+                    class="object-cover w-32 h-32 rounded">
+            </div>
         </div>
     </div>
 
@@ -148,6 +148,7 @@
 import AppLayout from '@/Layouts/Admin/App.vue';
 import PrimaryButton from '@/Components/Button/Primary.vue';
 import TextInput from '@/Components/Input/Textbox.vue'
+import SelectInput from '@/Components/Input/Select.vue'
 import { ref } from 'vue';
 import SecondaryButton from '@/Components/Button/Secondary.vue';
 
@@ -162,13 +163,36 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    categories: {
+        type: Array,
+        required: true,
+    },
+    brands: {
+        type: Array,
+        required: true,
+    }
 });
 
+const imagePreview = ref([]);
 
 const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    form.image = file;
+    const files = event.target.files;
+    imagePreview.value = [];
+
+    for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.value.push(e.target.result);
+        };
+        reader.readAsDataURL(files[i]);
+    }
 };
+
+
+// const handleImageUpload = (event) => {
+//     const file = event.target.files[0];
+//     form.image = file;
+// };
 
 
 

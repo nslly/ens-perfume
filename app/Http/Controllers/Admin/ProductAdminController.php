@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Brand;
 use Inertia\Response;
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
+use App\Models\Product\Category;
 use App\Traits\HandleCrudActions;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
-use App\Services\Admin\AdminProductService;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Resources\ProductResource;
+use App\Services\Admin\AdminProductService;
 
 class ProductAdminController extends Controller
 {
@@ -92,8 +93,33 @@ class ProductAdminController extends Controller
      */
     public function create(): Response
     {
+        $categories = Category::all(['slug', 'name']);
+        $brands = Brand::all(['id', 'name', 'logo']);
 
-        return $this->renderForm($this->createInertiaComponent, []);
+        return $this->renderForm($this->createInertiaComponent, [
+            'categories' => $categories,
+            'brands' => $brands,
+        ]);
+    }
+
+
+    
+    /**
+     * Store a newly created products in admin dashboard
+     * 
+     * @param ProductRequest $request a request object
+     * @return RedirectResponse
+     */
+    public function store(ProductRequest $request): RedirectResponse
+    {
+        try {
+            dd($request);
+            $this->productService->store($request->validated());
+            return redirect()->back()->with('success', 'Product created successfully!');;
+        } catch (\Exception $e) {
+            logger()->error('Cart store failed: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to create a product. Please try again.');
+        }
     }
 
 

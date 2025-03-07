@@ -3,7 +3,7 @@
 
     <AppLayout>
         <div class="h-full p-6 bg-white rounded-lg shadow-md">
-            <h1 class="text-2xl font-bold mb-4">Edit Product</h1>
+            <h1 class="mb-4 text-2xl font-bold">Edit Product</h1>
 
             <form @submit.prevent="updateProduct(productSlug)">
                 <Form :form="form"> 
@@ -16,7 +16,7 @@
                             <PrimaryButton                         
                                 :disabled="form.processing"
                                 type="submit">
-                                {{ form.processing ? 'Updating...' : 'Update Product' }}
+                                {{ form.processing ? 'Updating...' : 'Update' }}
                             </PrimaryButton>
                         </div>
                     </template>
@@ -59,16 +59,16 @@ const { page } = useAuth();
 
 // Form State
 const form = useForm({
-    name: props.items.product.name,
-    price: props.items.product.price,
-    category_id: props.items.product.category_id,
-    brand_id: props.items.product.brand_id,
-    volume: props.items.product.volume,
-    quantity: props.items.product.quantity,
-    discount: props.items.product.discount,
-    gender: props.items.product.gender,
-    image: null,
-    description: props.items.product.description,
+    name: props.items?.product?.name,
+    price: props.items?.product?.price,
+    category_id: props.items?.product?.category_id,
+    brand_id: props.items?.product?.brand_id,
+    volume: props.items?.product?.volume,
+    quantity: props.items?.product?.quantity,
+    discount: props.items?.product?.discount,
+    gender: props.items?.product?.gender,
+    images: props.items?.product?.images,
+    description: props.items?.product?.description,
 });
 
 

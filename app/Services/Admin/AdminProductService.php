@@ -3,6 +3,7 @@
 
 namespace App\Services\Admin;
 
+use Illuminate\Support\Str;
 use App\Models\Product\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -26,5 +27,30 @@ class AdminProductService
 
             return $product;
         });
+    }
+
+
+
+
+
+
+    /**
+     * Stores an product.
+     *
+     * @param array $formData The validated data request.
+     * @return mixed Returns the created product instance or a redirect response
+     */
+    public function store(array $formData)
+    {
+        try {
+            return DB::transaction(function () use ($formData) {
+                $formData['slug'] = Str::slug($formData['name']);
+
+                return Product::query()->create($formData);
+            });
+        } catch (\Exception $e) {
+            logger()->error('Failed to create a product: ' . $e->getMessage());
+            return null;
+        }
     }
 }

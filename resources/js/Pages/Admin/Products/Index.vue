@@ -3,11 +3,11 @@
 
     <AppLayout>
         <div class="overflow-x-auto bg-white rounded-lg shadow-md">
-            <div class="flex px-4 py-6 justify-end items-center">
+            <div class="flex items-center justify-end px-4 py-6">
                 <Link href="/admin/products/create">
                     <PrimaryButton>
                         Create Product 
-                        <i class="material-icons mr-2 text-2xl fill-current">
+                        <i class="mr-2 text-2xl fill-current material-icons">
                             add
                         </i>
 
@@ -15,17 +15,17 @@
                 </Link>
             </div>
             <table class="min-w-full">
-                <thead class="bg-blue-500 text-white">
+                <thead class="text-white bg-blue-500">
                     <tr>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Image</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Name</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Description</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Volume</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Quantity</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Price</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Discount</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Gender</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium uppercase">Actions</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Image</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Name</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Description</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Volume</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Quantity</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Price</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Discount</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Gender</th>
+                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -37,7 +37,7 @@
                     <tr
                         v-for="product in items.resource.data"
                         :key="product.id"
-                        class="hover:bg-gray-50 transition-colors"
+                        class="transition-colors hover:bg-gray-50"
                     >
                         <td class="px-4 py-3">
                             <div class="flex justify-center">
@@ -45,13 +45,13 @@
                                     v-if="product.images.length"
                                     :src="product.images[0]"
                                     alt="Product Image"
-                                    class="w-12 h-12 rounded object-cover"
+                                    class="object-cover w-12 h-12 rounded"
                                 />
                                 <span v-else class="text-gray-400">No Image</span>
                             </div>
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-700">{{ product.name }}</td>
-                        <td class="px-4 py-3 text-sm text-gray-700 max-w-xs truncate" :title="product.description">
+                        <td class="max-w-xs px-4 py-3 text-sm text-gray-700 truncate" :title="product.description">
                             {{ product.description }}
                         </td>
                         <td class="px-4 py-3 text-sm text-gray-700">{{ product.volume }} ml</td>
@@ -63,7 +63,7 @@
                             <div class="flex space-x-2">
                                 <Link :href="`/admin/products/${product.slug}/edit`">
                                     <button
-                                    class="flex items-center bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors"
+                                    class="flex items-center px-3 py-1 text-sm text-white transition-colors bg-blue-500 rounded hover:bg-blue-600"
                                     >
                                         <svg
                                             class="w-4 h-4 mr-1"
@@ -89,7 +89,7 @@
                                 </Modal>
                                 <button
                                     @click="openDeleteModal(product.slug)" 
-                                    class="flex items-center bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors"
+                                    class="flex items-center px-3 py-1 text-sm text-white transition-colors bg-red-500 rounded hover:bg-red-600"
                                 >
                                     <svg
                                         class="w-4 h-4 mr-1"
@@ -114,24 +114,24 @@
                 </tbody>
             </table>
         </div>
-        <div class="mt-6 flex items-center justify-end space-x-4">
+        <div class="flex items-center justify-end mt-6 space-x-4">
             <button 
                 :disabled="!pagination.prev_page_url" 
                 @click="goToPage(pagination.prev_page_url)" 
-                class="px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-300"
+                class="px-4 py-2 text-sm font-medium transition-all duration-300 border rounded-lg"
                 :class="pagination.prev_page_url ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
             >
                 Previous
             </button>
 
-            <span class="text-gray-700 text-sm">
+            <span class="text-sm text-gray-700">
                 Page {{ pagination.current_page }} of {{ pagination.last_page }}
             </span>
 
             <button 
                 :disabled="!pagination.next_page_url" 
                 @click="goToPage(pagination.next_page_url)" 
-                class="px-4 py-2 text-sm font-medium border rounded-lg transition-all duration-300"
+                class="px-4 py-2 text-sm font-medium transition-all duration-300 border rounded-lg"
                 :class="pagination.next_page_url ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
             >
                 Next
