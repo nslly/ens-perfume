@@ -74,7 +74,6 @@ const form = useForm({
 
 // Update Product Method
 const createProduct = async () => {
-    console.log(form);
     form.post('/admin/products', {
         preserveScroll: true,
         onSuccess: () => {

@@ -19,13 +19,13 @@
                 label="Category"
                 :options="categories"
                 placeholder="Choose a category"
-                :error="errors.category_id ?? ''"
+                :error="errors.category_roid ?? ''"
             />
         </div>
 
         <!-- Brand -->
         <div>
-             <SelectInput 
+            <SelectInput 
                 v-model="form.brand_id"
                 label="Brand"
                 :options="brands"
@@ -115,7 +115,7 @@
                 :error="errors.images ?? ''"
             />
 
-             <!-- Preview New Uploaded Images -->
+            <!-- Preview New Uploaded Images -->
             <div v-if="imagePreview.length" class="grid grid-cols-3 gap-2 mt-3">
                 <img v-for="(image, index) in imagePreview" :key="index" :src="image" alt="Preview"
                     class="object-cover w-32 h-32 rounded">
@@ -123,7 +123,7 @@
 
             <!-- Display Existing Images from JSON -->
             <div v-if="form.images" class="grid grid-cols-3 gap-2 mt-3">
-                <img v-for="(image, index) in images" :key="index" :src="image" alt="Existing Image"
+                <img v-for="(image, index) in form.images" :key="index" :src="image" alt="Existing Image"
                     class="object-cover w-32 h-32 rounded">
             </div>
         </div>
@@ -174,25 +174,27 @@ const props = defineProps({
 });
 
 const imagePreview = ref([]);
+const newFiles = ref([]); 
 
 const handleImageUpload = (event) => {
     const files = event.target.files;
+    if (!files.length) return;
+
     imagePreview.value = [];
+    newFiles.value = [];
 
     for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        newFiles.value.push(file);
         const reader = new FileReader();
         reader.onload = (e) => {
             imagePreview.value.push(e.target.result);
         };
-        reader.readAsDataURL(files[i]);
+        reader.readAsDataURL(file);
     }
 };
 
-
-// const handleImageUpload = (event) => {
-//     const file = event.target.files[0];
-//     form.image = file;
-// };
 
 
 

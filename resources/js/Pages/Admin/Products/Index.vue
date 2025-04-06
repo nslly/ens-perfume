@@ -42,7 +42,7 @@
                         <td class="px-4 py-3">
                             <div class="flex justify-center">
                                 <img
-                                    v-if="product.images.length"
+                                    v-if="product.images?.length"
                                     :src="product.images[0]"
                                     alt="Product Image"
                                     class="object-cover w-12 h-12 rounded"

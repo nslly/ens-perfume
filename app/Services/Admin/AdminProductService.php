@@ -45,6 +45,12 @@ class AdminProductService
         try {
             return DB::transaction(function () use ($formData) {
                 $formData['slug'] = Str::slug($formData['name']);
+                $imagePaths = [];
+                if ($formData['images']) {
+                    foreach ($formData['images'] as $image) {
+                        $imagePaths[] = $image->store('products', 'public');
+                    }
+                }
 
                 return Product::query()->create($formData);
             });

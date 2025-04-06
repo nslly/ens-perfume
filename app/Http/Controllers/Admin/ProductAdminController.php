@@ -93,7 +93,7 @@ class ProductAdminController extends Controller
      */
     public function create(): Response
     {
-        $categories = Category::all(['slug', 'name']);
+        $categories = Category::all(['id','slug', 'name']);
         $brands = Brand::all(['id', 'name', 'logo']);
 
         return $this->renderForm($this->createInertiaComponent, [
@@ -113,9 +113,8 @@ class ProductAdminController extends Controller
     public function store(ProductRequest $request): RedirectResponse
     {
         try {
-            dd($request);
             $this->productService->store($request->validated());
-            return redirect()->back()->with('success', 'Product created successfully!');;
+            return redirect()->route('admin.products.index')->with('success', 'Product created successfully!');;
         } catch (\Exception $e) {
             logger()->error('Cart store failed: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to create a product. Please try again.');
