@@ -149,7 +149,7 @@ import AppLayout from '@/Layouts/Admin/App.vue';
 import PrimaryButton from '@/Components/Button/Primary.vue';
 import TextInput from '@/Components/Input/Textbox.vue'
 import SelectInput from '@/Components/Input/Select.vue'
-import { ref } from 'vue';
+import { ref, defineExpose } from 'vue';
 import SecondaryButton from '@/Components/Button/Secondary.vue';
 
 
@@ -173,6 +173,7 @@ const props = defineProps({
     }
 });
 
+
 const imagePreview = ref([]);
 const newFiles = ref([]); 
 
@@ -181,22 +182,21 @@ const handleImageUpload = (event) => {
     if (!files.length) return;
 
     imagePreview.value = [];
-    newFiles.value = [];
+    newFiles.value = Array.from(files);;
 
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+    for (const file of newFiles.value) {
 
-        newFiles.value.push(file);
         const reader = new FileReader();
         reader.onload = (e) => {
             imagePreview.value.push(e.target.result);
         };
-        reader.readAsDataURL(file);
     }
 };
 
-
-
+//  Expose newFiles so parent can access it
+defineExpose({
+    newFiles
+});
 
 
 </script>

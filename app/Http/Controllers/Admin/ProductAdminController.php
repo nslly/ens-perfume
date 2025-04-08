@@ -73,7 +73,7 @@ class ProductAdminController extends Controller
         try {
             $products = Product::query()->with($this->getRelationships())
                 ->latest()
-                ->paginate(6);
+                ->paginate(10);
             $productsResource = ProductResource::collection($products);
             return $this->renderForm(
                 $this->indexInertiaComponent,

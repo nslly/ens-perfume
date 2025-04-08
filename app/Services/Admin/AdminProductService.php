@@ -43,17 +43,20 @@ class AdminProductService
     public function store(array $formData)
     {
         try {
-            return DB::transaction(function () use ($formData) {
-                $formData['slug'] = Str::slug($formData['name']);
-                $imagePaths = [];
-                if ($formData['images']) {
-                    foreach ($formData['images'] as $image) {
-                        $imagePaths[] = $image->store('products', 'public');
-                    }
-                }
+            $imagePaths = [];
 
-                return Product::query()->create($formData);
-            });
+            $formData['slug'] = Str::slug($formData['name']);
+            if ($formData['images']) {
+                foreach ($formData['images'] as $image) {
+                    $path = $image->store('products', 'public');
+                    $imagePaths[] = $path;
+                }
+            }
+
+            $formData['images'] = $imagePaths;
+
+            return Product::query()->create($formData);
+
         } catch (\Exception $e) {
             logger()->error('Failed to create a product: ' . $e->getMessage());
             return null;

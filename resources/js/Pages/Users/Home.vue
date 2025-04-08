@@ -5,10 +5,10 @@
         <div class="h-[800px] w-screen bg-[url('/images/bg.jpg')] bg-cover bg-center bg-no-repeat">
             <!-- Background Section -->
             <div class="text-[#fafafa] flex items-center justify-center h-full max-w-7xl mx-auto">
-                <div class="text-center flex flex-col">
-                    <h1 class="text-8xl leading-tight drop-shadow-lg font-bold">Discover the Essence of You</h1>
-                    <h2 class="text-2xl mt-4 text-gray-200 drop-shadow-md">A fragrance that defines your essence and lingers in every memory.</h2>
-                    <div class="flex justify-center items-center space-x-4 mt-8">
+                <div class="flex flex-col text-center">
+                    <h1 class="font-bold leading-tight text-8xl drop-shadow-lg">Discover the Essence of You</h1>
+                    <h2 class="mt-4 text-2xl text-gray-200 drop-shadow-md">A fragrance that defines your essence and lingers in every memory.</h2>
+                    <div class="flex items-center justify-center mt-8 space-x-4">
                         <PrimaryButton class="text-lg">Discover More</PrimaryButton>
                         <SecondaryButton class="text-lg">New Release</SecondaryButton>
                     </div>
@@ -16,7 +16,7 @@
             </div>
 
         </div>
-        <div class="mt-8 max-w-7xl mx-auto ">
+        <div class="mx-auto mt-8 max-w-7xl ">
             <ProductCard :products="items"/>
         </div>
 

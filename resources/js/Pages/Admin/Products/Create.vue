@@ -6,7 +6,7 @@
             <h1 class="mb-4 text-2xl font-bold">Create Product</h1>
 
             <form @submit.prevent="createProduct">
-                <Form :form="form" :brands="brands" :categories="categories"> 
+                <Form  ref="formRef" :form="form" :brands="brands" :categories="categories"> 
                     <template #action-button>
                         <!-- Submit Button -->
                         <div class="flex justify-end gap-2 mt-6" action-button>
@@ -53,6 +53,10 @@ const props = defineProps({
 const alertType = ref('');
 const alertMessage = ref('');
 
+
+const formRef = ref(null);
+
+
 const { page } = useAuth();
 const brands = computed(() => props.items?.brands);
 const categories = computed(() => props.items?.categories);
@@ -67,14 +71,34 @@ const form = useForm({
     quantity: null,
     discount: null,
     gender: null,
-    images: null,
+    images: [],
     description: null,
 });
 
 
 // Update Product Method
 const createProduct = async () => {
-    form.post('/admin/products', {
+
+    const files = formRef.value?.newFiles || [];
+
+    
+    form.transform((data) => {
+        const formData = new FormData();
+        
+        // Append all regular fields
+        Object.keys(data).forEach(key => {
+            if (key !== 'images') {
+                formData.append(key, data[key] || '');
+            }
+        });
+        
+        // Append each file
+        files.forEach((file, index) => {
+            formData.append(`images[${index}]`, file);
+        });
+        
+        return formData;
+    }).post('/admin/products', {
         preserveScroll: true,
         onSuccess: () => {
             alertType.value = 'success';
@@ -84,11 +108,14 @@ const createProduct = async () => {
             alertType.value = 'error';
             alertMessage.value = page.props.flash.error;
         }
-    })
+    });
+
+  
 };
 
 // Cancel and go back
 const goBack = () => {
     window.history.back();
 };
+
 </script>
