@@ -129,7 +129,13 @@ class ProductAdminController extends Controller
      */
     public function edit(Product $product): Response
     {
-        return $this->renderForm($this->editInertiaComponent, ['product' => $product]);
+        $categories = Category::all(['id','slug', 'name']);
+        $brands = Brand::all(['id', 'name', 'logo']);
+        return $this->renderForm($this->editInertiaComponent, [
+            'product' => $product,
+            'categories' => $categories,
+            'brands' => $brands,
+        ]);
     }
 
 

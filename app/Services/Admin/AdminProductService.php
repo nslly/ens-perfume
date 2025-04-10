@@ -17,16 +17,23 @@ class AdminProductService
      * Update a product with validated data.
      * 
      * @param Product $product a product instance
-     * @param array $validatedData the validated data
+     * @param array $formData the validated data
      * @return Product
      */
-    public function update(Product $product, array $validatedData): Product
+    public function update(Product $product, array $formData): Product
     {
-        return DB::transaction(function () use ($product, $validatedData) {
-            $product->update($validatedData);
+        if ($formData['images']) {
+            foreach ($formData['images'] as $image) {
+                $path = $image->store('products', 'public');
+                $imagePaths[] = $path;
+            }
+        }
 
-            return $product;
-        });
+        $formData['images'] = $imagePaths;
+        
+        $product->update($formData);
+
+        return $product;
     }
 
 

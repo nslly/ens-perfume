@@ -6,7 +6,7 @@
             <h1 class="mb-4 text-2xl font-bold">Edit Product</h1>
 
             <form @submit.prevent="updateProduct(productSlug)">
-                <Form :form="form"> 
+                <Form :form="form" :errors="errors" :brands="items.brands" :categories="items.categories"> 
                     <template #action-button>
                         <!-- Submit Button -->
                         <div class="flex justify-end gap-2 mt-6" action-button>
@@ -47,15 +47,16 @@ import Form from './Form.vue'
 // Props
 const props = defineProps({
     items: Object,
-    categories: Array, // Pass available categories for selection
-    brands: Array, // Pass available brands for selection
 });
 
 const productSlug = computed(() => props.items?.product?.slug || '');
 const alertType = ref('');
 const alertMessage = ref('');
 
+const errors = ref({})
 const { page } = useAuth();
+
+
 
 // Form State
 const form = useForm({
@@ -67,27 +68,51 @@ const form = useForm({
     quantity: props.items?.product?.quantity,
     discount: props.items?.product?.discount,
     gender: props.items?.product?.gender,
-    images: props.items?.product?.images,
+    images: props.items?.product?.images || [], // Ensure array
     description: props.items?.product?.description,
 });
 
 
 
+
+
+
 // Update Product Method
+// const updateProduct = async (slug) => {
+//     form.put(`/admin/products/${slug}`, {
+//         preserveScroll: true,
+//         preserveState: true,
+//         onSuccess: () => {
+//             alertType.value = 'success';
+//             alertMessage.value = page.props.flash.success;
+//         },
+//         onError: (err) => {
+//             errors.value = { ...err };
+//             alertType.value = 'error';
+//             alertMessage.value = page.props.flash.error;
+//         }
+//     })
+// };
+
+
 const updateProduct = async (slug) => {
-    form.put(`/admin/products/${slug}`, {
+
+    form.p(`/admin/products/${slug}`, {
         preserveScroll: true,
-        preserveState: true,
         onSuccess: () => {
             alertType.value = 'success';
             alertMessage.value = page.props.flash.success;
         },
-        onError: () => {
+        onError: (err) => {
+            errors.value = { ...err };
             alertType.value = 'error';
             alertMessage.value = page.props.flash.error;
         }
-    })
+    });
+
 };
+
+
 
 // Cancel and go back
 const goBack = () => {

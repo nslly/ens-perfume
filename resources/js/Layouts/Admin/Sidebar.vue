@@ -1,6 +1,6 @@
 <template>
     <div :class="['sidebar', { collapsed: !showSide }]"
-        class="w-[300px] bg-[#0D0D60] h-screen text-white transition-all duration-300">
+        class="w-[300px] bg-[#0D0D60] h-auto text-white transition-all duration-300">
         <div class="p-4 flex justify-start items-center" v-if="showSide">
             <h3 class="font-bold text-xl">Admin Panel</h3>
         </div>

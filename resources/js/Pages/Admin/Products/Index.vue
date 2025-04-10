@@ -43,7 +43,7 @@
                             <div class="flex justify-center">
                                 <img
                                     v-if="product.images?.length"
-                                    :src="`/storage/${product.images}`"
+                                    :src="`/storage/${product.images[0]}`"
                                     alt="Product Image"
                                     class="object-cover w-12 h-12 rounded"
                                 />
