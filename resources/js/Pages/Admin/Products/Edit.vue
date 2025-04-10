@@ -73,28 +73,6 @@ const form = useForm({
 });
 
 
-
-
-
-
-// Update Product Method
-// const updateProduct = async (slug) => {
-//     form.put(`/admin/products/${slug}`, {
-//         preserveScroll: true,
-//         preserveState: true,
-//         onSuccess: () => {
-//             alertType.value = 'success';
-//             alertMessage.value = page.props.flash.success;
-//         },
-//         onError: (err) => {
-//             errors.value = { ...err };
-//             alertType.value = 'error';
-//             alertMessage.value = page.props.flash.error;
-//         }
-//     })
-// };
-
-
 const updateProduct = async (slug) => {
 
     form.p(`/admin/products/${slug}`, {

@@ -31,7 +31,7 @@ class ProductRequest extends FormRequest
             'category_id' => ['required', 'exists:categories,id'], 
             'brand_id' => ['required', 'exists:brands,id'], 
             'images' => ['required', 'array'],
-            'images.*' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'], 
+            'images.*' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'], 
             'volume' => ['required', 'numeric', 'min:1'],
             'quantity' => ['required', 'integer', 'min:0'], 
             'discount' => ['nullable', 'numeric', 'min:0', 'max:100'],

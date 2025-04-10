@@ -106,50 +106,14 @@
 
         <!-- Image Upload -->
         <div class="col-span-2">
-            <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>
-            <input 
-                id="image"
-                type="file"
-                @change="handleImageUpload"
-                accept="image/*"
-                multiple
-                :disabled="form.processing"
-                :class="{ 'border-red-500': errors.images }"
-
+            <FilePondUploader 
+                v-model="form.images"
+                :existing-files="form.images ?? []"
+                @uploaded="handleUploaded"
+                @removed="handleRemoved"
             />
-            <p class="mt-1 text-xs text-gray-500">
-                Upload images (JPEG, PNG, GIF, SVG). Max 2MB each.
-            </p>
-
-            <div v-if="hasImageErrors" class="mt-1 space-y-1">
-                <p v-for="(error, index) in formattedImageErrors" :key="index" class="text-sm text-red-500">
-                    {{ error }}
-                </p>
-            </div>
-
-            <div v-if="imagePreview.length" class="mt-2 w-full flex justify-end items-end">
-                <button @click="clearAllImages" type="button" 
-                        class="text-sm text-red-500 hover:text-red-600 font-bold">
-                    Remove All Images
-                </button>
-            </div>
-
-
-            <!-- Preview New Uploaded Images -->
-            <div v-if="imagePreview.length" class="flex gap-8 mt-3">
-                <img v-for="(image, index) in imagePreview" :key="index" :src="image" alt="Preview"
-                    class="object-cover w-60 h-60 rounded-xl">
-            </div>
-
-            <!-- Display Existing Images -->
-            <div v-if="form.images.length" class="flex gap-8 mt-3">
-                <div v-for="(image, index) in form.images" :key="'existing-'+index" class="relative">
-                    <img 
-                        :src="getImageUrl(image)" 
-                        class="object-cover w-60 h-60 rounded-xl"
-                    >
-                </div>
-            </div>
+            <!-- Error Message -->
+            <p v-if="errors.images" class="mt-1 text-sm text-red-500">{{ errors.images }}</p>
         </div>
     </div>
 
@@ -174,7 +138,7 @@ import PrimaryButton from '@/Components/Button/Primary.vue';
 import TextInput from '@/Components/Input/Textbox.vue'
 import SelectInput from '@/Components/Input/Select.vue'
 import Textarea from '@/Components/Input/Textarea.vue'
-import { ref, defineExpose, computed } from 'vue';
+import FilePondUploader from '@/Components/Uploader/Filepond.vue'
 import SecondaryButton from '@/Components/Button/Secondary.vue';
 
 
@@ -201,64 +165,15 @@ const props = defineProps({
 });
 
 
-const imagePreview = ref([]);
-const newFiles = ref([]); 
 
+const handleUploaded = (fileId) => {
+  console.log('File uploaded:', fileId)
+}
 
-/**
- * Functions 
- */
-const hasImageErrors = computed(() => {
-    return props.errors.images || Object.keys(props.errors).some(k => k.startsWith('images.'));
-});
+const handleRemoved = (fileId) => {
+  console.log('File removed:', fileId)
+}
 
-const formattedImageErrors = computed(() => {
-    const allErrors = [];
-    if (props.errors.images) allErrors.push(props.errors.images);
-    Object.entries(props.errors).forEach(([key, error]) => {
-        if (key.startsWith('images.')) allErrors.push(`Image ${key.split('.')[1] + 1}: ${error}`);
-    });
-    return allErrors;
-});
-
-
-const clearAllImages = () => {
-    imagePreview.value = [];
-    newFiles.value = [];
-    if (hasImageErrors.value) {
-        form.clearErrors();
-    }
-};
-
-
-const getImageUrl = (image) => {
-    if (typeof image === 'string') {
-        return image.startsWith('http') ? image : `/storage/${image}`;
-    }
-    return image.url ? `/storage/${image.url}` : '';
-};
-
-
-
-const handleImageUpload = (event) => {
-    const files = event.target.files;
-    if (!files.length) return;
-
-    imagePreview.value = [];
-    newFiles.value = Array.from(files);;
-
-    newFiles.value.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = (e) => imagePreview.value.push(e.target.result);
-        reader.readAsDataURL(file);
-    });
-
-};
-
-//  Expose newFiles so parent can access it
-defineExpose({
-    newFiles
-});
 
 
 </script>

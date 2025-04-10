@@ -2,9 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RedirectIfAuthenticated;
+use App\Http\Controllers\Admin\ProductAdminController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
-use App\Http\Controllers\Admin\ProductAdminController;
+use App\Http\Controllers\Admin\Filepond\FileUploadController;
 
 /**
  * ---------------------
@@ -24,6 +25,16 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
     Route::get('products/{product}/edit', [ProductAdminController::class, 'edit'])->name('products.edit');
     Route::put('products/{product}', [ProductAdminController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [ProductAdminController::class, 'destroy'])->name('products.destroy');
+
+
+
+    /**
+     * Filepond Routes
+     */
+
+    Route::post('/upload', [FileUploadController::class, 'upload']); // For file uploads
+    Route::get('/upload/load', [FileUploadController::class, 'load']); // For loading files
+    Route::delete('/upload/delete', [FileUploadController::class, 'delete']); // For deleting files
 
     /**
      * 

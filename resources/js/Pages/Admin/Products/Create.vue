@@ -6,7 +6,7 @@
             <h1 class="mb-4 text-2xl font-bold">Create Product</h1>
 
             <form @submit.prevent="createProduct">
-                <Form  ref="formRef" :form="form" :brands="brands" :categories="categories" :errors="errors"> 
+                <Form :form="form" :brands="brands" :categories="categories" :errors="errors"> 
                     <template #action-button>
                         <!-- Submit Button -->
                         <div class="flex justify-end gap-2 mt-6" action-button>
@@ -58,9 +58,6 @@ const alertType = ref('');
 const alertMessage = ref('');
 
 
-const formRef = ref(null);
-
-
 const { page } = useAuth();
 const brands = computed(() => props.items?.brands);
 const categories = computed(() => props.items?.categories);
@@ -83,26 +80,8 @@ const form = useForm({
 // Update Product Method
 const createProduct = async () => {
 
-    const files = formRef.value?.newFiles || [];
 
-    
-    form.transform((data) => {
-        const formData = new FormData();
-        
-        Object.keys(data).forEach(key => {
-            if (key !== 'images') {
-                formData.append(key, data[key] || '');
-            }
-        });
-        
-        if (files.length > 0) {
-            files.forEach((file, index) => {
-                formData.append(`images[${index}]`, file);
-            });
-        }
-        
-        return formData;
-    }).post('/admin/products', {
+    form.post('/admin/products', {
         preserveScroll: true,
         onSuccess: () => {
             alertType.value = 'success';
