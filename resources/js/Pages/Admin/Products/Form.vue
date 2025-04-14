@@ -108,11 +108,9 @@
         <div class="col-span-2">
             <FilePondUploader 
                 v-model="form.images"
-                :existing-files="form.images ?? []"
-                @uploaded="handleUploaded"
-                @removed="handleRemoved"
+                :existing-files="existingImages"
             />
-            <!-- Error Message -->
+
             <p v-if="errors.images" class="mt-1 text-sm text-red-500">{{ errors.images }}</p>
         </div>
     </div>
@@ -133,6 +131,7 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
 import AppLayout from '@/Layouts/Admin/App.vue';
 import PrimaryButton from '@/Components/Button/Primary.vue';
 import TextInput from '@/Components/Input/Textbox.vue'
@@ -165,15 +164,12 @@ const props = defineProps({
 });
 
 
-
-const handleUploaded = (fileId) => {
-  console.log('File uploaded:', fileId)
-}
-
-const handleRemoved = (fileId) => {
-  console.log('File removed:', fileId)
-}
-
+const existingImages = computed(() => {
+  return props.product?.images?.map(image => ({
+    url: typeof image === 'string' ? `/storage/${image}` : image.url,
+    source: typeof image === 'string' ? `/storage/${image}` : image.url
+  })) || []
+})
 
 
 </script>

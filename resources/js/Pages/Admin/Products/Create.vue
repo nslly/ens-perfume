@@ -89,6 +89,7 @@ const createProduct = async () => {
         },
         onError: (err) => {
             errors.value = { ...err };
+            console.log(errors.value);
             alertType.value = 'error';
             alertMessage.value = page.props.flash.error;
         }

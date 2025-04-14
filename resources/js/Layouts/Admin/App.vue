@@ -1,13 +1,13 @@
 <template>
-    <div class="w-screen h-full flex overflow-hidden">
+    <div class="flex w-full h-[110vh] overflow-hidden">
         <Sidebar :showSide="showSide" />
 
         <!-- Main content -->
-        <div class="w-full h-full flex flex-col bg-gray-100">
+        <div class="flex flex-col w-full h-full overflow-hidden bg-slate-100">
             <!-- Navbar -->
             <Navbar @toggle-sidebar="toggleSideBar" />
 
-            <div class="flex-1 overflow-y-auto py-8 px-6">
+            <div class="flex-1 p-8 overflow-hidden">
                 <slot />
             </div>
         </div>

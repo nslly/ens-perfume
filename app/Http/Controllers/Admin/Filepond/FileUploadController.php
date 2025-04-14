@@ -11,33 +11,29 @@ class FileUploadController extends Controller
 {
     public function upload(Request $request)
     {
-        $request->validate([
-            'images' => 'required|array', // Keep this as 'images'
-            'images.*' => 'image|mimes:jpeg,png,jpg,webp|max:5120'
-        ]);
-    
-        $uploadedFiles = [];
-        
-        foreach ($request->file('images') as $file) {
-            $path = $file->store('public/uploads');
-            $filename = basename($path);
-            
-            $uploadedFiles[] = [
-                'id' => $filename,
-                'name' => $file->getClientOriginalName(),
-                'size' => $file->getSize(),
-                'type' => $file->getMimeType(),
-                'url' => Storage::url($path)
-            ];
+        if (!$request->hasFile('images')) {
+            return response()->json(['error' => 'No file uploaded'], 400);
         }
     
-        return response()->json($uploadedFiles);
+        $file = $request->file('images');    
+        $path = $file->store('products', 'public');
+        $filename = basename($path);
+    
+        return response()->json([
+            'id' => $filename,
+            'name' => $file->getClientOriginalName(),
+            'size' => $file->getSize(),
+            'type' => $file->getMimeType(),
+            'url' => Storage::url($path)
+        ]);
+
+        
     }
 
     public function load(Request $request)
     {
         $filename = $request->query('id');
-        $path = storage_path('app/public/uploads/' . $filename);
+        $path = storage_path('app/public/' . $filename); 
 
         if (!file_exists($path)) {
             abort(404);
@@ -48,12 +44,9 @@ class FileUploadController extends Controller
 
     public function delete(Request $request)
     {
-        if (!$request->isMethod('delete')) {
-            return response()->json(['error' => 'Method Not Allowed'], 405);
-        }
+        $filename = $request->getContent(); // Get raw content
 
-        $filename = $request->input('id');
-        $path = storage_path('app/public/uploads/' . $filename);
+        $path = storage_path('app/public/' . $filename); 
 
         if (file_exists($path)) {
             unlink($path);

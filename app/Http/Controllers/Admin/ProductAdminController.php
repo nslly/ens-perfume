@@ -49,18 +49,6 @@ class ProductAdminController extends Controller
 
 
 
-    // /**
-    //  * Get the cart for the authenticated user
-    //  * @return Collection
-    //  */
-    // private function getProduct(): Collection
-    // {
-    //     return Product::query()->with($this->getRelationships())
-    //         ->latest()
-    //         ->get();
-    // }
-
-
 
     /**
      * Display All Products

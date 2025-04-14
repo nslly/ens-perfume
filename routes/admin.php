@@ -32,9 +32,9 @@ Route::middleware(['admin'])->prefix('admin')->group(function () {
      * Filepond Routes
      */
 
-    Route::post('/upload', [FileUploadController::class, 'upload']); // For file uploads
-    Route::get('/upload/load', [FileUploadController::class, 'load']); // For loading files
-    Route::delete('/upload/delete', [FileUploadController::class, 'delete']); // For deleting files
+    Route::post('/upload', [FileUploadController::class, 'upload']); 
+    Route::get('/upload/load', [FileUploadController::class, 'load']); 
+    Route::delete('/upload/delete', [FileUploadController::class, 'delete']);
 
     /**
      * 

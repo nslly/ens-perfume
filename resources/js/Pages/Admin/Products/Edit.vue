@@ -68,14 +68,22 @@ const form = useForm({
     quantity: props.items?.product?.quantity,
     discount: props.items?.product?.discount,
     gender: props.items?.product?.gender,
-    images: props.items?.product?.images || [], // Ensure array
+    images: props.items?.product?.images || [],
     description: props.items?.product?.description,
 });
 
 
-const updateProduct = async (slug) => {
 
-    form.p(`/admin/products/${slug}`, {
+const updateProduct = async (slug) => {
+    
+
+    const formattedImages = form.images.map(image => {
+        return image instanceof File ? image : image
+    })
+    
+    form.images = formattedImages
+
+    form.put(`/admin/products/${slug}`, {
         preserveScroll: true,
         onSuccess: () => {
             alertType.value = 'success';
@@ -83,6 +91,7 @@ const updateProduct = async (slug) => {
         },
         onError: (err) => {
             errors.value = { ...err };
+            console.log(errors.value);
             alertType.value = 'error';
             alertMessage.value = page.props.flash.error;
         }

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\Product\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -22,10 +23,14 @@ class AdminProductService
      */
     public function update(Product $product, array $formData): Product
     {
+        $imagePaths = [];
+        $formData['slug'] = Str::slug($formData['name']);
+
         if ($formData['images']) {
-            foreach ($formData['images'] as $image) {
-                $path = $image->store('products', 'public');
-                $imagePaths[] = $path;
+            foreach ($formData['images'] as $filename) {
+                if (Storage::disk('public')->exists("products/{$filename}")) {
+                    $imagePaths[] = "products/{$filename}";
+                }
             }
         }
 
@@ -49,24 +54,20 @@ class AdminProductService
      */
     public function store(array $formData)
     {
-        try {
-            $imagePaths = [];
+        $imagePaths = [];
+    
+        $formData['slug'] = Str::slug($formData['name']);
 
-            $formData['slug'] = Str::slug($formData['name']);
-            if ($formData['images']) {
-                foreach ($formData['images'] as $image) {
-                    $path = $image->store('products', 'public');
-                    $imagePaths[] = $path;
+        if (!empty($formData['images'])) {
+            foreach ($formData['images'] as $filename) {
+                if (Storage::disk('public')->exists("products/{$filename}")) {
+                    $imagePaths[] = "products/{$filename}";
                 }
             }
-
-            $formData['images'] = $imagePaths;
-
-            return Product::query()->create($formData);
-
-        } catch (\Exception $e) {
-            logger()->error('Failed to create a product: ' . $e->getMessage());
-            return null;
         }
+
+        $formData['images'] = $imagePaths;
+
+        return Product::query()->create($formData);
     }
 }

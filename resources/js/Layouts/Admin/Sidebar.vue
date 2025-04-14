@@ -1,58 +1,60 @@
 <template>
     <div :class="['sidebar', { collapsed: !showSide }]"
-        class="w-[300px] bg-[#0D0D60] h-auto text-white transition-all duration-300">
-        <div class="p-4 flex justify-start items-center" v-if="showSide">
-            <h3 class="font-bold text-xl">Admin Panel</h3>
+        class="w-[300px] bg-white h-auto text-[#333333] transition-all duration-300">
+        <div class="flex items-center justify-start p-4" v-if="showSide">
+            <h3 class="text-xl font-bold">Admin Panel</h3>
         </div>
         <div class="p-2" v-else>
             <h3
-                class="font-bold flex justify-center text-xl bg-slate-100 rounded-full px-4 text-[#3f474e] text-center py-2">
+                class="font-bold flex justify-center text-xl bg-[#0D0D60] rounded-full px-4 text-white text-center py-2">
                 A</h3>
         </div>
 
         <hr />
-        <div class="p-4 space-y-2">
-            <div class="flex flex-col justify-between ">
-                <Link href="/admin/products" 
-                    class="menu-item  inline-flex items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-white hover:text-[#0D0D60] transition duration-400 ease-in-out" 
+        <div class="p-2 space-y-2">
+            <!-- Products -->
+            <div class="flex flex-col justify-between">
+                <Link href="/admin/products"
+                    class="menu-item inline-flex items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-slate-100 hover:bg-slate-100 hover:text-[#333333] transition duration-400 ease-in-out"
                     :class="{
-                        'bg-white text-[#0D0D60]': $page.url.startsWith('/admin/products')
+                        'bg-slate-100 text-[#333333]': $page.url.startsWith('/admin/products'),
+                        'justify-center': !showSide
                     }"
                 >
-                    <i class="material-icons mr-2 text-2xl fill-current">storefront</i>
-
-
-                    <span class="ml-2 font-medium" v-if="showSide">Products</span>
-                </Link>
-            </div>
-            <div class="flex flex-col justify-between ">
-                <Link href="/admin/brands" 
-                    class="menu-item inline-flex items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-white hover:text-[#0D0D60] transition duration-400 ease-in-out" 
-                    :class="{
-                        'bg-white text-[#0D0D60]': $page.url.startsWith('/admin/brands')
-                    }"
-                >
-                    <i class="material-icons mr-2 text-2xl fill-current">storefront</i>
-
-
-                    <span class="ml-2 font-medium" v-if="showSide">Brands</span>
-                </Link>
-            </div>
-            <div class="flex flex-col justify-between ">
-                <Link href="/admin/categories" 
-                    class="menu-item inline-flex items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-gray-200 hover:bg-white hover:text-[#0D0D60] transition duration-400 ease-in-out" 
-                    :class="{
-                        'bg-white text-[#0D0D60]': $page.url.startsWith('/admin/categories')
-                    }"
-                >
-                    <i class="material-icons mr-2 text-2xl fill-current">storefront</i>
-
-
-                    <span class="ml-2 font-medium" v-if="showSide">Category</span>
+                    <i class="text-2xl fill-current material-icons" :class="{ 'mr-2': showSide }">storefront</i>
+                    <span class="ml-2 font-medium transition-all duration-300" v-if="showSide">Products</span>
                 </Link>
             </div>
 
+            <!-- Brands -->
+            <div class="flex flex-col justify-between">
+                <Link href="/admin/brands"
+                    class="menu-item inline-flex items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-slate-100 hover:bg-slate-100 hover:text-[#333333] transition duration-400 ease-in-out"
+                    :class="{
+                        'bg-slate-100 text-[#333333]': $page.url.startsWith('/admin/brands'),
+                        'justify-center': !showSide
+                    }"
+                >
+                    <i class="text-2xl fill-current material-icons" :class="{ 'mr-2': showSide }">storefront</i>
+                    <span class="ml-2 font-medium transition-all duration-300" v-if="showSide">Brands</span>
+                </Link>
+            </div>
+
+            <!-- Categories -->
+            <div class="flex flex-col justify-between">
+                <Link href="/admin/categories"
+                    class="menu-item inline-flex items-center py-[10px] px-[10px] w-full text-sm font-medium rounded-md border-slate-100 hover:bg-slate-100 hover:text-[#333333] transition duration-400 ease-in-out"
+                    :class="{
+                        'bg-slate-100 text-[#333333]': $page.url.startsWith('/admin/categories'),
+                        'justify-center': !showSide
+                    }"
+                >
+                    <i class="text-2xl fill-current material-icons" :class="{ 'mr-2': showSide }">storefront</i>
+                    <span class="ml-2 font-medium transition-all duration-300" v-if="showSide">Category</span>
+                </Link>
+            </div>
         </div>
+
 
     </div>
 </template>

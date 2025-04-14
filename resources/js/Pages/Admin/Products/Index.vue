@@ -3,7 +3,7 @@
 
     <AppLayout>
         <div class="overflow-x-auto bg-white rounded-lg shadow-md">
-            <div class="flex items-center justify-end px-4 py-6">
+            <div class="flex items-center justify-end p-4">
                 <Link href="/admin/products/create">
                     <PrimaryButton>
                         Create Product 
@@ -15,17 +15,17 @@
                 </Link>
             </div>
             <table class="min-w-full">
-                <thead class="text-white bg-blue-500">
+                <thead class="text-white bg-[#0D0D60]">
                     <tr>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Image</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Name</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Description</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Volume</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Quantity</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Price</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Discount</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Gender</th>
-                        <th class="px-4 py-3 text-sm font-medium text-left uppercase">Actions</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Image</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Name</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Description</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Volume</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Quantity</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Price</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Discount</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Gender</th>
+                        <th class="px-4 py-3 text-sm text-left uppercase">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -63,7 +63,7 @@
                             <div class="flex space-x-2">
                                 <Link :href="`/admin/products/${product.slug}/edit`">
                                     <button
-                                    class="flex items-center px-3 py-1 text-sm text-white transition-colors bg-blue-500 rounded hover:bg-blue-600"
+                                    class="flex items-center px-3 py-1 text-sm text-white transition-colors bg-[#0D0D60] rounded hover:bg-[#0d0d60d8]"
                                     >
                                         <svg
                                             class="w-4 h-4 mr-1"
@@ -119,7 +119,7 @@
                 :disabled="!pagination.prev_page_url" 
                 @click="goToPage(pagination.prev_page_url)" 
                 class="px-4 py-2 text-sm font-medium transition-all duration-300 border rounded-lg"
-                :class="pagination.prev_page_url ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
+                :class="pagination.prev_page_url ? 'bg-[#0D0D60] rounded hover:bg-[#0d0d60d8] text-white ' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
             >
                 Previous
             </button>
@@ -132,7 +132,7 @@
                 :disabled="!pagination.next_page_url" 
                 @click="goToPage(pagination.next_page_url)" 
                 class="px-4 py-2 text-sm font-medium transition-all duration-300 border rounded-lg"
-                :class="pagination.next_page_url ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
+                :class="pagination.next_page_url ? 'bg-[#0D0D60] rounded hover:bg-[#0d0d60d8] text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'"
             >
                 Next
             </button>
