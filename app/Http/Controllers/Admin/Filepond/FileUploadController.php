@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Filepond;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,11 +12,11 @@ class FileUploadController extends Controller
 {
     public function upload(Request $request)
     {
-        if (!$request->hasFile('images')) {
+        if (!$request->hasFile('image')) {
             return response()->json(['error' => 'No file uploaded'], 400);
         }
     
-        $file = $request->file('images');    
+        $file = $request->file('image');    
         $path = $file->store('products', 'public');
         $filename = basename($path);
     
@@ -32,19 +33,32 @@ class FileUploadController extends Controller
 
     public function load(Request $request)
     {
-        $filename = $request->query('id');
-        $path = storage_path('app/public/' . $filename); 
+        $id = $request->get('id');
+
+        if (str_contains($id, '..')) {
+            abort(403, 'Forbidden');
+        }
+
+        if (!str_contains($id, '/')) {
+            $id = "products/{$id}";
+        }
+
+        $path = storage_path("app/public/{$id}");
 
         if (!file_exists($path)) {
-            abort(404);
+            abort(404, 'File not found');
         }
 
         return response()->file($path);
     }
 
+
+
+
+
     public function delete(Request $request)
     {
-        $filename = $request->getContent(); // Get raw content
+        $filename = $request->getContent();
 
         $path = storage_path('app/public/' . $filename); 
 

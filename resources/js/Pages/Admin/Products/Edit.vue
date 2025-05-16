@@ -2,7 +2,7 @@
     <Head title="Product Edit" />
 
     <AppLayout>
-        <div class="h-full p-6 bg-white rounded-lg shadow-md">
+        <div class="h-auto p-6 bg-white rounded-lg shadow-md">
             <h1 class="mb-4 text-2xl font-bold">Edit Product</h1>
 
             <form @submit.prevent="updateProduct(productSlug)">
@@ -57,7 +57,6 @@ const errors = ref({})
 const { page } = useAuth();
 
 
-
 // Form State
 const form = useForm({
     name: props.items?.product?.name,
@@ -68,20 +67,14 @@ const form = useForm({
     quantity: props.items?.product?.quantity,
     discount: props.items?.product?.discount,
     gender: props.items?.product?.gender,
-    images: props.items?.product?.images || [],
+    image: props.items?.product?.image,
     description: props.items?.product?.description,
 });
-
 
 
 const updateProduct = async (slug) => {
     
 
-    const formattedImages = form.images.map(image => {
-        return image instanceof File ? image : image
-    })
-    
-    form.images = formattedImages
 
     form.put(`/admin/products/${slug}`, {
         preserveScroll: true,
@@ -91,7 +84,6 @@ const updateProduct = async (slug) => {
         },
         onError: (err) => {
             errors.value = { ...err };
-            console.log(errors.value);
             alertType.value = 'error';
             alertMessage.value = page.props.flash.error;
         }

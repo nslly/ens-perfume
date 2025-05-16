@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-white text-[#333333] flex items-center justify-between px-6 w-full py-[18px] z-10 border-b">
+    <div class="bg-white text-[#333333] flex items-center justify-between px-6 w-full py-[18px] z-10 border-b sticky top-0">
         <div class="flex">
             <div class="cursor-pointer w-[30px]" @click="toggleSidebar">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-[25px] text-[#0D0D60] h-[25px]">

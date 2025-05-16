@@ -25,13 +25,11 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', 'unique:products,slug'],
             'description' => ['required', 'string', 'max:2000'], 
             'price' => ['required', 'numeric', 'min:0'], 
             'category_id' => ['required', 'exists:categories,id'], 
             'brand_id' => ['required', 'exists:brands,id'], 
-            'images' => ['required', 'array', 'min:1', 'max:5'],
-            'images.*' => ['required', 'string'],
+            'image' => ['required', 'string', 'max:2048'],
             'volume' => ['required', 'numeric', 'min:1'],
             'quantity' => ['required', 'integer', 'min:0'], 
             'discount' => ['nullable', 'numeric', 'min:0', 'max:100'],

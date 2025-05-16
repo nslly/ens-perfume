@@ -1,5 +1,5 @@
 <template>
-    <div class="relative mx-auto max-w-7xl">
+    <div class="relative w-full mx-auto max-w-7xl">
         <Swiper 
             v-bind="swiperConfig" 
             :modules="[Navigation, Pagination]"
@@ -11,11 +11,15 @@
                 </div>
             </SwiperSlide>
         </Swiper>
+
     </div>
 </template>
 
 <script setup>
+
     import { defineProps, ref } from "vue";
+    import { Swiper, SwiperSlide } from "swiper/vue";
+    import { Navigation, Pagination } from 'swiper/modules';
     import { swiperConfig } from '@/Utils/swiper.js';
 
     import ProductCard from './Card/ProductCard.vue';
@@ -45,6 +49,7 @@
 </script>
 
 <style scoped>
+
     .product-carousel {
         padding-bottom: 50px; 
     }

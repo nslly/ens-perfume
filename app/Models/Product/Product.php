@@ -3,6 +3,7 @@
 namespace App\Models\Product;
 
 use App\Models\Brand;
+use Illuminate\Support\Str;
 use App\Models\Product\Category;
 use App\Enums\GenderIdentification;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,6 @@ class Product extends Model
 
     protected $fillable = [
         'name',
-        'slug',
         'category_id',
         'brand_id',
         'description',
@@ -24,14 +24,31 @@ class Product extends Model
         'quantity',
         'price',
         'discount',
-        'images',
+        'image',
         'gender',
     ];
 
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($product) {
+            if (!$product->slug || $product->isDirty('name')) {
+                $product->slug = Str::slug($product->name);
+
+                $originalSlug = $product->slug;
+                $counter = 1;
+                while (static::where('slug', $product->slug)->where('id', '!=', $product->id)->exists()) {
+                    $product->slug = $originalSlug . '-' . $counter++;
+                }
+            }
+        });
+    }
+
+
     protected $casts = [
         'gender' => GenderIdentification::class,
-        'images' => 'array',
     ];
 
 
@@ -39,6 +56,8 @@ class Product extends Model
     {
         return 'slug';
     }
+
+
 
 
 

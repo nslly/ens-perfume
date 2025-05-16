@@ -3,6 +3,7 @@
 
 namespace App\Services\Admin;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Product\Product;
 use Illuminate\Support\Facades\DB;
@@ -16,30 +17,39 @@ class AdminProductService
 
     /**
      * Update a product with validated data.
-     * 
-     * @param Product $product a product instance
-     * @param array $formData the validated data
+     *
+     * @param Product $product The product instance
+     * @param array $formData The validated input data
      * @return Product
      */
     public function update(Product $product, array $formData): Product
     {
-        $imagePaths = [];
-        $formData['slug'] = Str::slug($formData['name']);
+        $oldImage = $product->image;
+        $newImage = $formData['image'] ?? null;
 
-        if ($formData['images']) {
-            foreach ($formData['images'] as $filename) {
-                if (Storage::disk('public')->exists("products/{$filename}")) {
-                    $imagePaths[] = "products/{$filename}";
+        if ($newImage) {
+            $filename = str_replace(['/storage/', url('/storage') . '/'], '', $newImage);
+
+            if (!str_starts_with($filename, 'products/')) {
+                $filename = 'products/' . ltrim($filename, '/');
+            }
+
+            if ($filename !== $oldImage) {
+                if ($oldImage && Storage::exists("public/{$oldImage}")) {
+                    Storage::delete("public/{$oldImage}");
                 }
+
+                $product->image = $filename;
             }
         }
 
-        $formData['images'] = $imagePaths;
-        
-        $product->update($formData);
+        $product->fill(Arr::except($formData, ['image']))->save();
 
         return $product;
     }
+
+
+
 
 
 
@@ -54,19 +64,16 @@ class AdminProductService
      */
     public function store(array $formData)
     {
-        $imagePaths = [];
+        $imagePaths = '';
     
-        $formData['slug'] = Str::slug($formData['name']);
-
-        if (!empty($formData['images'])) {
-            foreach ($formData['images'] as $filename) {
-                if (Storage::disk('public')->exists("products/{$filename}")) {
-                    $imagePaths[] = "products/{$filename}";
-                }
+        if (!empty($formData['image'])) {
+            if (Storage::disk('public')->exists("products/{$formData['image']}")) {
+                $imagePaths = "products/{$formData['image']}";
             }
         }
+        
 
-        $formData['images'] = $imagePaths;
+        $formData['image'] = $imagePaths;
 
         return Product::query()->create($formData);
     }

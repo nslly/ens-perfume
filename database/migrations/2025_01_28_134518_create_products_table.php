@@ -24,7 +24,7 @@ return new class extends Migration
             $table->unsignedInteger('quantity');
             $table->integer('price');
             $table->integer('discount')->nullable();
-            $table->json('images');
+            $table->string('image');
             $table->tinyInteger('gender');
             $table->timestamps();
             $table->softDeletes();

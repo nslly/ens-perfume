@@ -1,15 +1,15 @@
 <template>
     <div v-if="product.maxQuantity">
-        <img class="w-full h-64 object-cover" :src="product.image" :alt="product.name" />
-        <div class="py-4 flex justify-center items-center flex-col">
+        <img v-if="product.image?.length" class="object-cover w-full h-64" :src="`/storage/${product.image}`" :alt="product.name" />
+        <div class="flex flex-col items-center justify-center py-4">
             <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">{{ product.name }}</div>
-                <p class="text-gray-700 text-base">
+                <div class="mb-2 text-xl font-bold">{{ product.name }}</div>
+                <p class="text-base text-gray-700">
                     {{ product.description }}
                 </p>
             </div>
             <div class="px-6 py-4">
-                <div class="flex justify-between items-center space-x-2">
+                <div class="flex items-center justify-between space-x-2">
                     <span 
                         class="text-sm font-semibold text-gray-500" 
                         :class="{'line-through': product.discount}"
@@ -41,13 +41,13 @@
                     v-model="product.finalPrice"
                     type="hidden" 
                 />
-                <div class="flex justify-center items-center gap-2">
+                <div class="flex items-center justify-center gap-2">
                     <input 
                         type="number" 
                         v-model="product.quantity" 
                         min="1" 
                         :max="product.maxQuantity"
-                        class="w-16 px-2 py-1 border border-gray-300 rounded text-center"
+                        class="w-16 px-2 py-1 text-center border border-gray-300 rounded"
                         @input="validateQuantity(product)"
 
                     />
@@ -71,14 +71,14 @@
                     </div>
 
                 </div>
-                <div class="flex mt-2 justify-center items-center flex-col">
-                    <div class="mt-2 flex justify-center items-center">
+                <div class="flex flex-col items-center justify-center mt-2">
+                    <div class="flex items-center justify-center mt-2">
                         <p class="text-sm text-gray-400">
                             <span class="font-semibold text-[#1F2123]">{{ product.maxQuantity }}</span> available stock
                         </p>
                     </div>
                     <div v-if="product.quantity >= product.maxQuantity" class="mt-2">
-                        <p class="text-red-500 text-sm italic">
+                        <p class="text-sm italic text-red-500">
                             Reach limit stock of the item.
                         </p>
                     </div>

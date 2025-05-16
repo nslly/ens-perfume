@@ -35,7 +35,7 @@ class ProductFactory extends Factory
             'quantity' => $this->faker->numberBetween(1, 100),
             'price' => $this->faker->randomFloat(2, 500, 5000),
             'discount' => $this->faker->randomFloat(2, 0, 100),
-            'images' => json_encode([$this->faker->imageUrl(640, 480, 'perfume')]),
+            'image' => $this->faker->imageUrl(640, 480, 'perfume'),
             'gender' => $this->faker->randomElement(GenderIdentification::cases())->value,
         ];
     }

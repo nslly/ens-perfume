@@ -27,7 +27,7 @@ class ProductResource extends JsonResource
             'quantity' => $this->quantity,
             'price' => $this->price,
             'discount' => $this->discount,
-            'images' => $this->images,
+            'image' => $this->image,
             'gender' => GenderIdentification::tryFrom($this->gender->value)?->name,
         ];
     }

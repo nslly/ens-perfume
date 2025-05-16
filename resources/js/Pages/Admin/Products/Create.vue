@@ -2,13 +2,13 @@
     <Head title="Product Edit" />
 
     <AppLayout>
-        <div class="h-full p-6 bg-white rounded-lg shadow-md">
+        <div class="h-auto p-6 bg-white rounded-lg shadow-md">
             <h1 class="mb-4 text-2xl font-bold">Create Product</h1>
 
             <form @submit.prevent="createProduct">
                 <Form :form="form" :brands="brands" :categories="categories" :errors="errors"> 
                     <template #action-button>
-                        <!-- Submit Button -->
+                        
                         <div class="flex justify-end gap-2 mt-6" action-button>
                             <SecondaryButton type="button" @click="goBack">
                                 Cancel
@@ -72,7 +72,7 @@ const form = useForm({
     quantity: null,
     discount: null,
     gender: null,
-    images: [],
+    image: null,
     description: null,
 });
 

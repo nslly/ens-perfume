@@ -107,11 +107,11 @@
         <!-- Image Upload -->
         <div class="col-span-2">
             <FilePondUploader 
-                v-model="form.images"
-                :existing-files="existingImages"
+                v-model="form.image"
+                :existing-file="existingImage"
             />
 
-            <p v-if="errors.images" class="mt-1 text-sm text-red-500">{{ errors.images }}</p>
+            <p v-if="errors.image" class="mt-1 text-sm text-red-500">{{ errors.image }}</p>
         </div>
     </div>
 
@@ -131,7 +131,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import AppLayout from '@/Layouts/Admin/App.vue';
 import PrimaryButton from '@/Components/Button/Primary.vue';
 import TextInput from '@/Components/Input/Textbox.vue'
@@ -164,12 +164,22 @@ const props = defineProps({
 });
 
 
-const existingImages = computed(() => {
-  return props.product?.images?.map(image => ({
-    url: typeof image === 'string' ? `/storage/${image}` : image.url,
-    source: typeof image === 'string' ? `/storage/${image}` : image.url
-  })) || []
-})
+
+
+
+const existingImage = computed(() => {
+  if (!props.form.image) return '';
+
+  if (typeof props.form.image === 'object') {
+    return props.form.image.url || props.form.image.path || '';
+  }
+
+  if (typeof props.form.image === 'string') {
+    return props.form.image.replace(/^storage\//, '');
+  }
+
+  return '';
+});
 
 
 </script>
