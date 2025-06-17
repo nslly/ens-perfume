@@ -2,13 +2,13 @@
     <Head title="Cart" />
 
     <AppLayout>
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Shopping Cart</h1>
+        <div class="px-4 py-8 mx-auto max-w-7xl">
+            <h1 class="mb-6 text-2xl font-bold text-gray-800">Shopping Cart</h1>
 
-            <div v-if="items.length > 0" class="bg-white shadow-md rounded-lg p-4">
-                <div v-for="cart in items" :key="cart.id" class="flex items-center border-b pb-4 mb-4">
+            <div v-if="items.length > 0" class="p-4 bg-white rounded-lg shadow-md">
+                <div v-for="cart in items" :key="cart.id" class="flex items-center pb-4 mb-4 border-b">
                     <!-- Product Image -->
-                    <img :src="cart.product.image" alt="Product Image" class="w-24 h-24 object-cover rounded-md mr-4">
+                    <img :src="cart.product.image" alt="Product Image" class="object-cover w-24 h-24 mr-4 rounded-md">
 
                     <div class="flex-1">
                         <!-- Product Name -->
@@ -28,7 +28,7 @@
                             </button>
                         </div>
                         <div v-if="cart.quantity >= cart.product.data.quantity" class="mt-2">
-                            <p class="text-red-500 text-sm italic">
+                            <p class="text-sm italic text-red-500">
                                 You already hit the limit stock of the item.
                             </p>
                         </div>
@@ -52,7 +52,7 @@
                 </Modal>
 
                 <!-- Total Price -->
-                <div class="flex justify-between items-center mt-6">
+                <div class="flex items-center justify-between mt-6">
                     <p class="text-lg font-semibold text-gray-900">Total: ${{ totalPrice }}</p>
                     <input type="hidden" v-model="totalPrice">
                     <PrimaryButton @click="checkoutModal = true" class="text-lg">Checkout</PrimaryButton>
@@ -60,7 +60,7 @@
             </div>
 
             <!-- Empty Cart Message -->
-            <div v-else class="text-center py-10 text-gray-500">
+            <div v-else class="py-10 text-center text-gray-500">
                 <p>Your cart is empty.</p>
             </div>
         </div>
@@ -89,11 +89,11 @@
     /**------------------  
         Vars
     ------------------*/
-
-    const props = defineProps({
-        items: Array, 
-    });
     
+    const props = defineProps({
+        items: Object,
+    });
+
 
     const checkoutModal = ref(false);
     const deleteModal = ref(false);
